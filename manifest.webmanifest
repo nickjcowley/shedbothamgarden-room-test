@@ -1,6 +1,6 @@
 {
-  "name": "Garden Room & Shed – Test Recorder",
-  "short_name": "Test Recorder",
+  "name": "Small Shed & Office Shed – Test Recorder",
+  "short_name": "Shed Tests",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

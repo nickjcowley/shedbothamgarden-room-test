@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Garden Room & Shed – Test Recorder</title>
+<title>Small Shed & Office Shed – Test Recorder</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1f5fbf">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Test Recorder">
+<meta name="apple-mobile-web-app-title" content="Shed Tests">
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--ink:#16202a;--mut:#5b6773;--line:#d9dee4;--acc:#1f5fbf;--acc2:#e8f0fc;--ok:#13795b;--okbg:#e2f5ee;--warn:#9a5b00;--warnbg:#fff1d6;--bad:#b3261e;--badbg:#fde7e5;--stop:#7a1a14}
 @media (prefers-color-scheme:dark){:root{--bg:#12161b;--card:#1b2128;--ink:#e8edf2;--mut:#9aa7b4;--line:#2d3640;--acc:#6aa5ff;--acc2:#1c2a3f;--ok:#53d1a5;--okbg:#14332a;--warn:#f0b24a;--warnbg:#3a2b0e;--bad:#ff8a80;--badbg:#401a17;--stop:#ffb4ab}}
@@ -75,7 +75,7 @@ textarea{width:100%;min-height:240px;font:13px/1.45 ui-monospace,Menlo,Consolas,
 </head>
 <body>
 <header>
-  <h1>Garden Room &amp; Shed – guided test recorder</h1>
+  <h1>Small Shed &amp; Office Shed – guided test recorder</h1>
   <span id="offl">Offline</span>
   <span id="overall">0 entered</span>
 </header>
@@ -89,17 +89,17 @@ textarea{width:100%;min-height:240px;font:13px/1.45 ui-monospace,Menlo,Consolas,
 /* ------------------------------------------------------------------ data */
 const LS_KEY = "grtest-v1";
 const BASE_CIRCUITS = [
-  {id:"sh",  name:"PRIMARY submain: house → shed CU (20 m T&E + 60 m SWA), Zs at shed CU", dev:"B32 (house RCBO, 100 mA)", lim:1.10, pred:"R1+R2 ≈0.28, Zs ≈0.50 (at Ze 0.22; 0.63 at Ze 0.35)", base:"ze"},
-  {id:"shring",name:"Shed ring circuit",                                   dev:"B32", lim:1.10, pred:"—", base:"sh", ring:true},
-  {id:"shlt", name:"Shed light radial",                                    dev:"B6",  lim:5.82, pred:"—", base:"sh"},
-  {id:"gr",  name:"SECONDARY submain: shed CU → garden room CU (20 m SWA), Zs at GR CU", dev:"B32 MCB at shed CU (no RCD)", lim:1.10, pred:"R1+R2 ≈0.36, Zs ≈0.58 (at Ze 0.22; 0.71 at Ze 0.35)", base:"ze"},
-  {id:"ring",name:"Garden room socket ring",                      dev:"B32",                     lim:1.10, pred:"Zs ≈0.73 (GR CU + 0.15)",           base:"gr", ring:true},
-  {id:"lt",  name:"Garden room lighting",                         dev:"B6",                      lim:5.82, pred:"Zs ≈1.18 (GR CU + 0.60)",           base:"gr"},
+  {id:"sh",  name:"PRIMARY submain: house → small shed CU (20 m T&E + 60 m SWA), Zs at small shed CU", dev:"B32 (house RCBO, 100 mA)", lim:1.10, pred:"R1+R2 ≈0.28, Zs ≈0.50 (at Ze 0.22; 0.63 at Ze 0.35)", base:"ze"},
+  {id:"shring",name:"Small shed ring circuit",                                   dev:"B32", lim:1.10, pred:"—", base:"sh", ring:true},
+  {id:"shlt", name:"Small shed light radial",                                    dev:"B6",  lim:5.82, pred:"—", base:"sh"},
+  {id:"gr",  name:"SECONDARY submain: small shed CU → office shed CU (20 m SWA), Zs at office shed CU", dev:"B32 MCB at small shed CU (no RCD)", lim:1.10, pred:"R1+R2 ≈0.36, Zs ≈0.58 (at Ze 0.22; 0.71 at Ze 0.35)", base:"ze"},
+  {id:"ring",name:"Office shed socket ring",                      dev:"B32",                     lim:1.10, pred:"Zs ≈0.73 (office shed CU + 0.15)",           base:"gr", ring:true},
+  {id:"lt",  name:"Office shed lighting",                         dev:"B6",                      lim:5.82, pred:"Zs ≈1.18 (office shed CU + 0.60)",           base:"gr"},
   {id:"ac",  name:"A/C radial (H1)",                              dev:"B10",                     lim:3.50, pred:"—",                     base:"gr"}
 ];
 const RINGS = [
-  {p:"shring", cid:"shring", name:"Shed ring circuit", sk:"sock2"},
-  {p:"ring",   cid:"ring",   name:"Garden room ring circuit", sk:"sock"}
+  {p:"shring", cid:"shring", name:"Small shed ring circuit", sk:"sock2"},
+  {p:"ring",   cid:"ring",   name:"Office shed ring circuit", sk:"sock"}
 ];
 const skey=(r,t,i)=>(r.p==="ring"?"":r.p)+"x"+t+i;
 const nsock=r=>S[r.sk]||6;
@@ -112,13 +112,13 @@ const EQ = [
 const EQOPT = [["","— choose —"],["disc","Disconnected for the test"],["low","Left connected: tested L+N to earth at 250 V"],["skip","Not tested: recorded as a limitation"]];
 const BOARDS = [
   {id:"ze", name:"House origin (Ze)"},
-  {id:"sh", name:"Shed CU"},
-  {id:"gr", name:"Garden room CU"}
+  {id:"sh", name:"Small shed CU"},
+  {id:"gr", name:"Office shed CU"}
 ];
 const RCDS = [
   {id:"sm", name:"House submain RCBO (32 A)", inn:100},
-  {id:"sh", name:"Shed CU RCD/RCBOs (ring, lights)", inn:30},
-  {id:"gr", name:"Garden room CU RCD/RCBOs", inn:30}
+  {id:"sh", name:"Small shed CU RCD/RCBOs (ring, lights)", inn:30},
+  {id:"gr", name:"Office shed CU RCD/RCBOs", inn:30}
 ];
 const inn=d=>{const o=parseFloat(S.v["inn_"+d.id]);return o>0?o:d.inn;};
 const STEPS = [
@@ -142,8 +142,8 @@ const VIS = [
  "Earth conductor sizes as designed: 14 mm² CU→rear of house, 10 mm² beyond; connections tight and labelled",
  "PME/earthing arrangement as designed for the outbuildings (confirmed with electrician; 'Safety Electrical Connection' labels on the CU)",
  "Consumer units/enclosures: correct IP rating, covers fitted, blanks in all spare ways, no damage",
- "Device ratings match design: house RCBO 32 A 100 mA bidirectional; shed ring B32, shed lights B6; shed CU 32 A Type B MCB (no RCD) feeding the secondary submain; garden room ring B32, lights B6, A/C B10",
- "Shed CU: primary submain (60 m SWA) terminated and glanded correctly; secondary submain (20 m SWA) leaves from the 32 A MCB with its own gland, armour earth and correct earth continuity back to the house",
+ "Device ratings match design: house RCBO 32 A 100 mA bidirectional; small shed ring B32, small shed lights B6; small shed CU 32 A Type B MCB (no RCD) feeding the secondary submain; office shed ring B32, lights B6, A/C B10",
+ "Small shed CU: primary submain (60 m SWA) terminated and glanded correctly; secondary submain (20 m SWA) leaves from the 32 A MCB with its own gland, armour earth and correct earth continuity back to the house",
  "Cable sizes and routes match design; cables supported; safe zones / RCD protection for concealed cables",
  "Socket outlets, switches, light fittings mounted securely, no damage, correct IP where required",
  "Labels on every circuit way, warning notices (dual supply / Powerwall / PV isolator), circuit chart fitted",
@@ -153,33 +153,33 @@ const VIS = [
 const ISO = [
  "Warn everyone in the house you are about to switch power off.",
  "Identify ALL sources: grid supply and the Powerwall (with its PV). Both reach the new CU through the splitter, upstream of its main switch, so that main switch cuts the CU off from them (next step).",
- "Switch off the house RCBO feeding the outbuildings (this cuts the submain off from grid, PV and Powerwall) and lock it off with a padlock/lock-off device and a 'DANGER – DO NOT SWITCH ON' tag. Keep the key on you. The RCBO alone is enough while you work at the shed and garden room boards. When you open the house CU to work on the submain way (link line to earth there for R1+R2, or disconnect the submain conductors for insulation resistance), also switch off that CU's main switch. The CU holding the submain RCBO (the new Powerwall-backed one) and the old plastic CU are both fed from the Powerwall output through the splitter, upstream of their main switches, so that switch cuts the CU off from grid and Powerwall. The splitter and the incomer terminals above the main switch stay live: do not touch them. Prove the busbar and the submain terminals dead before you start. The old plastic CU and the EV charger CU can stay on.",
+ "Switch off the house RCBO feeding the outbuildings (this cuts the submain off from grid, PV and Powerwall) and lock it off with a padlock/lock-off device and a 'DANGER – DO NOT SWITCH ON' tag. Keep the key on you. The RCBO alone is enough while you work at the small shed and office shed boards. When you open the house CU to work on the submain way (link line to earth there for R1+R2, or disconnect the submain conductors for insulation resistance), also switch off that CU's main switch. The CU holding the submain RCBO (the new Powerwall-backed one) and the old plastic CU are both fed from the Powerwall output through the splitter, upstream of their main switches, so that switch cuts the CU off from grid and Powerwall. The splitter and the incomer terminals above the main switch stay live: do not touch them. Prove the busbar and the submain terminals dead before you start. The old plastic CU and the EV charger CU can stay on.",
  "PROVE your voltage indicator on a known live source or proving unit (GS38 leads/probes, fused).",
- "TEST the circuit to be worked on dead: line–neutral, line–earth, neutral–earth (and at the shed/GR ends).",
+ "TEST the circuit to be worked on dead: line–neutral, line–earth, neutral–earth (and at the small shed / office shed ends).",
  "RE-PROVE the indicator on the known source. Only now treat it as dead.",
  "Repeat this isolation each time you re-open a circuit. Re-prove if you take a break."
 ];
 const LABELS = [
- "HOUSE CU: each way labelled with the circuit it protects, including the new way as 'Supplies shed + garden room' (BS 7671 514.1.1, 514.8)",
+ "HOUSE CU: each way labelled with the circuit it protects, including the new way as 'Supplies small shed + office shed' (BS 7671 514.1.1, 514.8)",
  "HOUSE CU: RCD test notice fitted – test the RCD/RCBO test buttons every six months (514.12.2)",
  "HOUSE CU: periodic inspection notice fitted – date of inspection and recommended interval, filled in from the EIC (514.12.1)",
  "HOUSE: warning notice for more than one source of supply (grid, PV, Powerwall) at the origin, meter and house CU – must be a physical label on the enclosure (514.15 / 514.11)",
- "SHED CU: every way labelled (incomer, shed ring, shed lights, 32 A MCB to garden room); incomer labelled 'Fed from house CU, way X – isolate there'",
- "SHED CU: RCD test notice and periodic inspection notice fitted",
- "SHED CU: 'Safety Electrical Connection – do not remove' labels at the earthing connections, if the electrician specifies them",
- "GARDEN ROOM CU: every way labelled (incomer, ring, lights, A/C); incomer labelled 'Fed from shed CU 32 A MCB – isolate there'",
- "GARDEN ROOM CU: RCD test notice and periodic inspection notice fitted",
+ "SMALL SHED CU: every way labelled (incomer, small shed ring, small shed lights, 32 A MCB to office shed); incomer labelled 'Fed from house CU, way X – isolate there'",
+ "SMALL SHED CU: RCD test notice and periodic inspection notice fitted",
+ "SMALL SHED CU: 'Safety Electrical Connection – do not remove' labels at the earthing connections, if the electrician specifies them",
+ "OFFICE SHED CU: every way labelled (incomer, ring, lights, A/C); incomer labelled 'Fed from small shed CU 32 A MCB – isolate there'",
+ "OFFICE SHED CU: RCD test notice and periodic inspection notice fitted",
  "SPD type and make at each CU noted for the EIC schedule (no label required, but record it)",
  "Circuit chart fixed inside or beside each of the three boards (use the charts below), filled in and legible, with measured Zs values (514.9.1)",
  "No mixed-colour cable warning needed (all cabling is to current colours) – confirm with the electrician"
 ];
 const FUNC = [
  "Operate every switch, isolator and control: correct operation, correct item switched",
- "House RCBO test button trips it; shed and garden room RCD/RCBO test buttons trip them",
+ "House RCBO test button trips it; small shed and office shed RCD/RCBO test buttons trip them",
  "Check all socket outlets for correct polarity with the tester's socket function (or plug-in tester) and no loose faces",
  "Confirm A/C unit runs on the B10 radial and the manufacturer's maximum overcurrent device rating allows B10 (check nameplate/manual)",
  "Check Powerwall/inverter backup and normal modes: supply to outbuildings works on grid and (if designed) on backup",
- "Check phase/line identification and that the shed CU is fed only from the house RCBO via the primary submain and the garden room CU only from the shed CU 32 A MCB via the secondary submain",
+ "Check phase/line identification and that the small shed CU is fed only from the house RCBO via the primary submain and the office shed CU only from the small shed CU 32 A MCB via the secondary submain",
  "Confirm labels and notices fitted; circuit charts completed with measured Zs values",
  "Take photos of terminations/boards before covers go on, and keep for the electrician"
 ];
@@ -291,7 +291,7 @@ function checks(){
   const v0=num("vd0"), v1=num("vd1");
   let vd=NA;
   if(!isNaN(v0)&&!isNaN(v1)&&v0>0){const p=(v0-v1)/v0*100; vd=p>5?R("bad",fmt(p,1)+" % drop (max 5 %)"):p>3?R("warn",fmt(p,1)+" % (lighting limit 3 %)"):R("ok",fmt(p,1)+" %");}
-  add("vd","live","Voltage drop at shed end under load",vd);
+  add("vd","live","Voltage drop at small shed end under load",vd);
   const lk=num("leak");
   add("leak","live","Standing leakage on submain",isNaN(lk)?NA:lk>30?R("warn",lk+" mA – above 30 mA target, find the source"):R("ok",lk+" mA"));
   VIS.forEach((t,i)=>add("vis"+i,"visual","Visual: "+t,S.c["vis"+i]?R("ok","done"):NA));
@@ -366,20 +366,20 @@ function chartTbl(title,rows){
 function chartsHTML(){
   const L=id=>LIM(circuits().find(c=>c.id===id)).toFixed(2);
   return chartTbl("House CU – new way only (add to the existing house chart)",[
-    {w:"new",n:"Outbuildings submain (shed + garden room)",d:"32 A Type A bidirectional RCBO",cb:"10 mm² 3-core SWA (earth 14 mm² in house, 10 mm² beyond)",rcd:"100 mA",r12:"r12_sh",lim:L("sh"),zs:"zs_sh",c:"sh"}])+
-  chartTbl("Shed CU",[
+    {w:"new",n:"Outbuildings submain (small shed + office shed)",d:"32 A Type A bidirectional RCBO",cb:"10 mm² 3-core SWA (earth 14 mm² in house, 10 mm² beyond)",rcd:"100 mA",r12:"r12_sh",lim:L("sh"),zs:"zs_sh",c:"sh"}])+
+  chartTbl("Small shed CU",[
     {n:"Incomer from house (20 m T&E + 60 m SWA)",d:"100 A main switch",cb:"10 mm² 3-core SWA",rcd:"–"},
-    {n:"Shed ring",d:"B32",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_shring",lim:L("shring"),zs:"zs_shring",c:"shring"},
-    {n:"Shed lights",d:"B6",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_shlt",lim:L("shlt"),zs:"zs_shlt",c:"shlt"},
-    {n:"Garden room feed (20 m SWA)",d:"B32 Type B MCB",cb:"10 mm² 3-core SWA",rcd:"none",r12:"r12_gr",lim:L("gr"),zs:"zs_gr",c:"gr"}])+
-  chartTbl("Garden room CU",[
-    {n:"Incomer from shed CU",d:"100 A main switch",cb:"10 mm² 3-core SWA",rcd:"–"},
+    {n:"Small shed ring",d:"B32",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_shring",lim:L("shring"),zs:"zs_shring",c:"shring"},
+    {n:"Small shed lights",d:"B6",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_shlt",lim:L("shlt"),zs:"zs_shlt",c:"shlt"},
+    {n:"Office shed feed (20 m SWA)",d:"B32 Type B MCB",cb:"10 mm² 3-core SWA",rcd:"none",r12:"r12_gr",lim:L("gr"),zs:"zs_gr",c:"gr"}])+
+  chartTbl("Office shed CU",[
+    {n:"Incomer from small shed CU",d:"100 A main switch",cb:"10 mm² 3-core SWA",rcd:"–"},
     {n:"Socket ring",d:"B32 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ring",lim:L("ring"),zs:"zs_ring",c:"ring"},
     {n:"Lighting",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt",lim:L("lt"),zs:"zs_lt",c:"lt"},
     {n:"A/C radial (H1)",d:"B10 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ac",lim:L("ac"),zs:"zs_ac",c:"ac"},
     {n:"SPD",d:"type / make: ______"},
     {n:"Spare",d:""}])+
-  `<p class="mut">Figures fill in as you enter them on the earlier steps. Zs for the shed feed way is the Zs at the shed CU incomer. Copy onto the chart supplied with each unit, or print this page and fix it inside the door.</p>`;
+  `<p class="mut">Figures fill in as you enter them on the earlier steps. Zs for the small shed feed way is the Zs at the small shed CU incomer. Copy onto the chart supplied with each unit, or print this page and fix it inside the door.</p>`;
 }
 
 const VIEWS={
@@ -403,9 +403,9 @@ ${box("stop","Be realistic about your role","You can record these results, but t
 </div>
 <h3>Quick reference – what you are testing</h3>
 <ul>
-<li><b>Primary submain:</b> house CU (Powerwall-backed) → <b>house RCBO 32 A, 100 mA bidirectional</b> → 20 m T&amp;E (14 mm² earth) then 60 m SWA → <b>shed CU</b>, which carries its own <b>ring circuit</b>, <b>light radial</b> and a <b>32 A MCB</b> (no RCD, so the garden room RCBOs are the only 30 mA devices in that leg and can be tested on their own).</li><li><b>Secondary submain:</b> shed CU 32 A MCB → 20 m SWA → <b>garden room CU</b>.</li>
+<li><b>Primary submain:</b> house CU (Powerwall-backed) → <b>house RCBO 32 A, 100 mA bidirectional</b> → 20 m T&amp;E (14 mm² earth) then 60 m SWA → <b>small shed CU</b>, which carries its own <b>ring circuit</b>, <b>light radial</b> and a <b>32 A MCB</b> (no RCD, so the office shed RCBOs are the only 30 mA devices in that leg and can be tested on their own).</li><li><b>Secondary submain:</b> small shed CU 32 A MCB → 20 m SWA → <b>office shed CU</b>.</li>
 <li>Earth: 14 mm² from house CU to rear of house, then 10 mm² (plus the SWA armour/3rd core as designed).</li>
-<li>Garden room CU: ring B32, lighting B6, A/C radial <b>B10</b>. Shed CU ring and light radial device ratings: confirm on the devices and change the "Max Zs" box in the live step if different (B32 1.10 Ω, B16 2.19, B10 3.50, B6 5.82).</li>
+<li>Office shed CU: ring B32, lighting B6, A/C radial <b>B10</b>. Small shed CU ring and light radial device ratings: confirm on the devices and change the "Max Zs" box in the live step if different (B32 1.10 Ω, B16 2.19, B10 3.50, B6 5.82).</li>
 <li>Limits shown are 80 % of the BS 7671 Type B maximum Zs (Zs measured at normal conductor temperature must not exceed these).</li></ul>
 </div>`;},
 
@@ -427,7 +427,7 @@ ${box("","How to do it",`<ol>
 <li><b>Null the leads</b>: clip the two test leads together, press Zero/Null until the tester reads 0.00 Ω. (If you skip this, every reading is too high.)</li>
 <li>At the CU, link the circuit's <b>line</b> terminal and its <b>earth (CPC)</b> terminal together at the board end (short wire/crocodile clips).</li>
 <li>Go to the far end of the circuit (the furthest socket, light or the A/C isolator). Measure between line and earth there. The reading is R1+R2. Record it below.</li>
-<li>For the <b>two submain</b> rows: link line to earth at the house end and read line to earth at the shed CU (primary, expect ≈0.28 Ω). Then do the same reading at the garden room CU (expect ≈0.36 Ω); that value includes the primary submain. To check the 20 m secondary on its own, link line to earth at the shed CU end of the secondary and read at the garden room CU (≈0.07 Ω). For the shed circuits, link at the shed CU and read at the far socket/light.</li>
+<li>For the <b>two submain</b> rows: link line to earth at the house end and read line to earth at the small shed CU (primary, expect ≈0.28 Ω). Then do the same reading at the office shed CU (expect ≈0.36 Ω); that value includes the primary submain. To check the 20 m secondary on its own, link line to earth at the small shed CU end of the secondary and read at the office shed CU (≈0.07 Ω). For the small shed circuits, link at the small shed CU and read at the far socket/light.</li>
 <li>Remove your link wires.</li></ol>`)}
 ${box("why","Reading it","Higher than expected usually means a loose terminal, a missed conductor or a break. Much lower than expected: likely a parallel path (a borrowed earth) or the leads weren't nulled right. Temperature changes it slightly; the limits already allow for that.")}
 <div class="tw"><table><thead><tr><th>Circuit</th><th>R1+R2 (Ω)</th><th>Result</th></tr></thead><tbody>
@@ -436,10 +436,10 @@ ${circuits().map(c=>`<tr><td>${esc(c.name)}<div class="mut">${esc(c.dev)}</div><
 <button class="sm" data-act="addc">+ Add another circuit</button></div>`;},
 
 ring(){return `<div class="card"><h2>Ring circuits</h2>
-<p class="sub">Dead tests, done for BOTH rings: the shed ring first (it is on the primary submain), then the garden room ring. Three end-to-end readings each, then cross-connection readings at each socket. This proves each ring is a true, unbroken ring with no hidden spurs.</p>
+<p class="sub">Dead tests, done for BOTH rings: the small shed ring first (it is on the primary submain), then the office shed ring. Three end-to-end readings each, then cross-connection readings at each socket. This proves each ring is a true, unbroken ring with no hidden spurs.</p>
 ${mft("ring")}
 ${box("","Part A – end-to-end (at the CU, ring disconnected from the MCB/RCBO and its terminals)",`<ol>
-<li>Safely isolate (both submains if you are working in the shed CU). Pull the ring's line, neutral and earth out of the CU so you can see all six ends: L1, L2, N1, N2, E1, E2 (1 and 2 are the two cables).</li>
+<li>Safely isolate (both submains if you are working in the small shed CU). Pull the ring's line, neutral and earth out of the CU so you can see all six ends: L1, L2, N1, N2, E1, E2 (1 and 2 are the two cables).</li>
 <li>Null the leads (see the MFT1711 box above). Measure <b>L1 to L2</b> = <b>r1</b>, <b>N1 to N2</b> = <b>rn</b>, <b>E1 to E2</b> = <b>r2</b>. r1 and rn should be about the same; r2 is about 1.67× larger for 2.5 mm²/1.5 mm² T&amp;E.</li></ol>`)}
 ${box("","Part B – cross-connect and test each socket",`<ol>
 <li>Join L1 to N2 and L2 to N1 (cross-connect). At every socket measure <b>L–N</b>: the readings should be nearly identical.</li>
@@ -461,7 +461,7 @@ return `<div class="card"><h3 style="margin-top:0">${rg.name}</h3>
 ir(){return `<div class="card"><h2>Insulation resistance</h2>
 <p class="sub">Dead test at 500 V DC. Required minimum is 1 MΩ; anything under 2 MΩ should be investigated.</p>
 ${mft("ir")}
-${box("","Two submains: test each separately",`<ol><li><b>Primary:</b> isolate at the house. At the shed CU disconnect the incoming SWA from the main switch (or isolate the whole shed CU) so the shed ring, lights and the secondary submain are out of circuit. Test the 60 m SWA core-to-core and core-to-armour.</li><li><b>Secondary:</b> at the shed CU disconnect the 32 A MCB output and at the garden room CU disconnect the incoming SWA. Test the 20 m SWA the same way.</li><li>Then test each final circuit (shed ring, shed lights, garden room ring, lights, A/C) with its own breaker on and everything electronic disconnected. Reconnect and re-test polarity as you go.</li></ol>`)}
+${box("","Two submains: test each separately",`<ol><li><b>Primary:</b> isolate at the house. At the small shed CU disconnect the incoming SWA from the main switch (or isolate the whole small shed CU) so the small shed ring, lights and the secondary submain are out of circuit. Test the 60 m SWA core-to-core and core-to-armour.</li><li><b>Secondary:</b> at the small shed CU disconnect the 32 A MCB output and at the office shed CU disconnect the incoming SWA. Test the 20 m SWA the same way.</li><li>Then test each final circuit (small shed ring, small shed lights, office shed ring, lights, A/C) with its own breaker on and everything electronic disconnected. Reconnect and re-test polarity as you go.</li></ol>`)}
 ${box("stop","Before you press test","Remove or unplug anything electronic: A/C unit, LED drivers, dimmers, smart switches, surge protectors, USB socket faces. 500 V can damage them and gives false low readings. Disconnect neutral/earth links at the CU as the instructions for your board say, or test at the circuit end with the ways switched off.")}
 ${box("","How to do it",`<ol>
 <li>Safely isolate. Switch all circuit breakers ON in the board (so conductors are included), main isolation OFF and locked.</li>
@@ -486,7 +486,7 @@ ${box("","How to do it",`<ol>
 <li>Safely isolate. Use the continuity range.</li>
 <li>Single pole switches (lights): with the switch ON, measure from the line terminal at the board to the switch line terminal; switch OFF, the reading goes open. Confirm the switch breaks the <b>line</b>, not the neutral.</li>
 <li>Sockets: with the ring links back in, measure from the board line to the line pin on each socket, neutral to neutral, CPC to earth pin. The same for the A/C isolator.</li>
-<li>Check that the shed/GR boards' line, neutral, earth arrive on the correct SWA cores (brown→L, blue→N, black/grey as designed, armour→earth).</li></ol>`)}
+<li>Check that the small shed / office shed boards' line, neutral, earth arrive on the correct SWA cores (brown→L, blue→N, black/grey as designed, armour→earth).</li></ol>`)}
 <p class="mut">This is also re-checked live in the next step. Tick when confirmed for the whole circuit.</p>
 ${circuits().map(c=>`<div class="item"><label class="chk"><input type="checkbox" data-c="pol_${c.id}" ${S.c["pol_"+c.id]?"checked":""}><span>${esc(c.name)}</span></label>${cmt("pol_"+c.id)}</div>`).join("")}</div>`;},
 
@@ -505,15 +505,15 @@ ${BOARDS.map(b=>`<tr><td>${b.name}</td><td class="num">${numIn("pfc_"+b.id,"0.00
 <h3>Zs – earth fault loop impedance, at each circuit</h3>
 ${box("","How",`<ol><li>Power on from the grid. Tester on loop (no-trip / RCD-safe if available; use the high current mode only if the RCD isn't in circuit).</li>
 <li>Measure at the board for the submain rows (line to earth at the incoming terminals), and at the far end of each final circuit (last socket, last light, A/C isolator).</li>
-<li>For the ring, measure at the socket that gave the highest L–CPC cross-connect reading.</li><li>Work outwards: house origin (Ze), then the shed CU incoming, then the shed ring and lights, then the garden room CU incoming, then the garden room circuits. The shed circuits are checked against the shed CU reading, and the garden room circuits against the garden room CU reading.</li>
-<li>Take the highest of 2–3 readings. The tool compares with the limit and flags if the result isn't close to Ze (or GR board Zs) + R1+R2.</li></ol>`)}
+<li>For the ring, measure at the socket that gave the highest L–CPC cross-connect reading.</li><li>Work outwards: house origin (Ze), then the small shed CU incoming, then the small shed ring and lights, then the office shed CU incoming, then the office shed circuits. The small shed circuits are checked against the small shed CU reading, and the office shed circuits against the office shed CU reading.</li>
+<li>Take the highest of 2–3 readings. The tool compares with the limit and flags if the result isn't close to Ze (or office shed board Zs) + R1+R2.</li></ol>`)}
 <div class="tw"><table><thead><tr><th>Circuit</th><th>Max Zs</th><th>Pack predicts</th><th>Measured Zs (Ω)</th><th>Result</th></tr></thead><tbody>
 ${circuits().map(c=>`<tr><td>${esc(c.name)}<div class="mut">${esc(c.dev)}</div></td><td class="num"><input type="number" step="any" data-k="lim_${c.id}" placeholder="${c.lim.toFixed(2)}" value="${esc(get("lim_"+c.id))}"></td><td class="mut">${esc(c.pred)}</td><td class="num">${numIn("zs_"+c.id,"0.00")}</td><td>${h("zs:"+c.id)}</td></tr>`).join("")}
 </tbody></table></div>
 <h3>Voltage drop and leakage (informative)</h3>
 <div class="grid2">
-<div><label class="mut">L–N voltage at shed CU, no load (V)</label>${numIn("vd0","230")}</div>
-<div><label class="mut">L–N voltage at shed CU, with heavy load on (V)</label>${numIn("vd1","")}</div>
+<div><label class="mut">L–N voltage at small shed CU, no load (V)</label>${numIn("vd0","230")}</div>
+<div><label class="mut">L–N voltage at small shed CU, with heavy load on (V)</label>${numIn("vd1","")}</div>
 <div><label class="mut">Result</label><div style="padding-top:8px">${h("vd")}</div></div>
 <div><label class="mut">Standing leakage on submain (mA) – clamp meter on L+N together</label>${numIn("leak","")}</div>
 <div><label class="mut">Result</label><div style="padding-top:8px">${h("leak")}</div></div></div></div>`;},
@@ -593,7 +593,7 @@ function update(){
 }
 function report(res){
   const L=[];const m=S.m;
-  L.push("GARDEN ROOM & SHED – PRE-INSPECTION TEST RECORD (BS 7671:2018+A4:2026)");
+  L.push("SMALL SHED & OFFICE SHED – PRE-INSPECTION TEST RECORD (BS 7671:2018+A4:2026)");
   L.push("Tester: "+(m.name||"-")+"   Date: "+(m.date||"-"));
   L.push("Instrument: "+(m.inst||"-")+"  S/N "+(m.serial||"-")+"  Cal: "+(m.cal||"-")+"   Supply: "+(m.sup||"-"));
   L.push("Prepared by the installer for the verifying electrician; not a certificate.\n");
@@ -655,7 +655,7 @@ document.addEventListener("click",async e=>{
   const a=b.dataset.act;
   if(a==="addsock"){const rg=RINGS.find(r=>r.p===b.dataset.ring)||RINGS[1];S[rg.sk]=nsock(rg)+1;save();view();}
   else if(a==="addc"){
-    const n=prompt("Circuit name (e.g. Shed sockets):"); if(!n) return;
+    const n=prompt("Circuit name (e.g. Small shed sockets):"); if(!n) return;
     const dev=prompt("Protective device, e.g. B16:","B16")||"B16";
     const lims={B6:5.82,B10:3.5,B16:2.19,B20:1.75,B25:1.4,B32:1.1};
     const key=dev.toUpperCase().replace(/\s/g,"");
@@ -668,10 +668,10 @@ document.addEventListener("click",async e=>{
     setTimeout(()=>b.textContent="Copy report",1800);
   }
   else if(a==="dl"){
-    if(!saveFile("garden-room-test-record.txt",document.getElementById("rep").value,"text/plain")){document.getElementById("rep").select();b.textContent="Download failed – copy the text";setTimeout(()=>b.textContent="Download as text file",3000);}
+    if(!saveFile("small-small shed-office-small shed-test-record.txt",document.getElementById("rep").value,"text/plain")){document.getElementById("rep").select();b.textContent="Download failed – copy the text";setTimeout(()=>b.textContent="Download as text file",3000);}
   }
   else if(a==="bak"){
-    const fn="garden-room-test-backup-"+new Date().toISOString().slice(0,10)+".json";
+    const fn="small-small shed-office-small shed-test-backup-"+new Date().toISOString().slice(0,10)+".json";
     if(!saveFile(fn,JSON.stringify(S),"application/json")){b.textContent="Backup failed";setTimeout(()=>b.textContent="Back up data",3000);}
   }
   else if(a==="bakcopy"){
