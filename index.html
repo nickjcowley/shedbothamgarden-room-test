@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garden Room & Shed – Test Recorder</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f5fbf">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Test Recorder">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#16202a;--mut:#5b6773;--line:#d9dee4;--acc:#1f5fbf;--acc2:#e8f0fc;--ok:#13795b;--okbg:#e2f5ee;--warn:#9a5b00;--warnbg:#fff1d6;--bad:#b3261e;--badbg:#fde7e5;--stop:#7a1a14}
+@media (prefers-color-scheme:dark){:root{--bg:#12161b;--card:#1b2128;--ink:#e8edf2;--mut:#9aa7b4;--line:#2d3640;--acc:#6aa5ff;--acc2:#1c2a3f;--ok:#53d1a5;--okbg:#14332a;--warn:#f0b24a;--warnbg:#3a2b0e;--bad:#ff8a80;--badbg:#401a17;--stop:#ffb4ab}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:14px 18px;border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;flex:1 1 220px}
+#overall{font-size:13px;padding:4px 10px;border-radius:99px;background:var(--acc2);color:var(--acc);font-weight:600}
+#offl{font-size:12px;padding:3px 9px;border-radius:99px;border:1px dashed var(--line);color:var(--mut)}
+.wrap{display:grid;grid-template-columns:230px 1fr;gap:18px;max-width:1150px;margin:0 auto;padding:18px}
+nav{position:sticky;top:76px;align-self:start}
+nav button{display:flex;width:100%;text-align:left;gap:8px;align-items:center;border:0;background:none;color:var(--ink);padding:8px 10px;border-radius:8px;font:inherit;font-size:14px;cursor:pointer}
+nav button:hover{background:var(--acc2)}
+nav button.on{background:var(--acc2);color:var(--acc);font-weight:600}
+nav .n{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:inline-grid;place-items:center;font-size:12px;flex:none}
+nav .n.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+nav .n.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+nav .n.warn{background:var(--warn);border-color:var(--warn);color:#fff}
+main{min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+h2{margin:0 0 4px;font-size:21px}
+h3{margin:18px 0 6px;font-size:16px}
+.sub{color:var(--mut);margin:0 0 12px}
+.box{border-left:4px solid var(--acc);background:var(--acc2);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:15px}
+.box.stop{border-color:var(--bad);background:var(--badbg);color:var(--stop)}
+.box.why{border-color:var(--mut);background:transparent;border:1px dashed var(--line);border-left:4px solid var(--mut)}
+.box b:first-child{display:block;margin-bottom:2px}
+ol,ul{padding-left:22px;margin:6px 0}
+li{margin:3px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+.tw{overflow-x:auto}
+input[type=text],input[type=number],input[type=date],select{font:inherit;font-size:16px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;min-width:84px}
+input:focus,select:focus{outline:2px solid var(--acc);outline-offset:1px}
+td.num input{max-width:120px}
+label.chk{display:flex;gap:10px;align-items:flex-start;padding:9px 6px;border-bottom:1px solid var(--line);cursor:pointer}
+label.chk input{width:20px;height:20px;margin-top:2px;flex:none}
+.b{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.b.ok{background:var(--okbg);color:var(--ok)}
+.b.warn{background:var(--warnbg);color:var(--warn)}
+.b.bad{background:var(--badbg);color:var(--bad)}
+.b.na{background:transparent;color:var(--mut);border:1px dashed var(--line)}
+.mut{color:var(--mut);font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button.p,button.s{font:inherit;font-size:15px;padding:9px 16px;border-radius:9px;border:1px solid var(--acc);cursor:pointer}
+button.p{background:var(--acc);color:#fff}
+button.s{background:transparent;color:var(--acc)}
+button.sm{font:inherit;font-size:13px;padding:5px 10px;border-radius:7px;border:1px solid var(--line);background:none;color:var(--ink);cursor:pointer;margin-top:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.kpi div{flex:1 1 90px;padding:10px;border-radius:10px;text-align:center;font-size:13px}
+.kpi b{display:block;font-size:24px}
+.item{border-bottom:1px solid var(--line);padding-bottom:8px}.item .chk{border-bottom:0;padding-bottom:4px}input.cm{margin-left:36px;width:calc(100% - 36px);font-size:14px;padding:5px 8px}
+.mft{border:1px solid var(--acc);border-radius:10px;padding:10px 14px;margin:12px 0;background:var(--card)}
+.mft>b{display:block;color:var(--acc);margin-bottom:4px}
+.mft table{margin:6px 0}.mft td,.mft th{padding:4px 6px;font-size:13.5px}
+kbd{font:600 12.5px ui-monospace,Menlo,monospace;background:var(--acc2);color:var(--acc);border:1px solid var(--line);border-radius:5px;padding:1px 6px;white-space:nowrap}
+textarea{width:100%;min-height:240px;font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;padding:10px}nav{position:static;display:flex;overflow-x:auto;gap:4px}nav button{width:auto;white-space:nowrap}.grid2{grid-template-columns:1fr}}
+@media print{header,nav,.row,.noprint{display:none}.wrap{display:block}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Garden Room &amp; Shed – guided test recorder</h1>
+  <span id="offl">Offline</span>
+  <span id="overall">0 entered</span>
+</header>
+<div class="wrap">
+  <nav id="nav" aria-label="Test steps"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+"use strict";
+/* ------------------------------------------------------------------ data */
+const LS_KEY = "grtest-v1";
+const BASE_CIRCUITS = [
+  {id:"sh",  name:"PRIMARY submain: house → shed CU (20 m T&E + 60 m SWA), Zs at shed CU", dev:"B32 (house RCBO, 100 mA)", lim:1.10, pred:"R1+R2 ≈0.28, Zs ≈0.50 (at Ze 0.22; 0.63 at Ze 0.35)", base:"ze"},
+  {id:"shring",name:"Shed ring circuit",                                   dev:"B32", lim:1.10, pred:"—", base:"sh", ring:true},
+  {id:"shlt", name:"Shed light radial",                                    dev:"B6",  lim:5.82, pred:"—", base:"sh"},
+  {id:"gr",  name:"SECONDARY submain: shed CU → garden room CU (20 m SWA), Zs at GR CU", dev:"B32 MCB at shed CU (no RCD)", lim:1.10, pred:"R1+R2 ≈0.36, Zs ≈0.58 (at Ze 0.22; 0.71 at Ze 0.35)", base:"ze"},
+  {id:"ring",name:"Garden room socket ring",                      dev:"B32",                     lim:1.10, pred:"Zs ≈0.73 (GR CU + 0.15)",           base:"gr", ring:true},
+  {id:"lt",  name:"Garden room lighting",                         dev:"B6",                      lim:5.82, pred:"Zs ≈1.18 (GR CU + 0.60)",           base:"gr"},
+  {id:"ac",  name:"A/C radial (H1)",                              dev:"B10",                     lim:3.50, pred:"—",                     base:"gr"}
+];
+const RINGS = [
+  {p:"shring", cid:"shring", name:"Shed ring circuit", sk:"sock2"},
+  {p:"ring",   cid:"ring",   name:"Garden room ring circuit", sk:"sock"}
+];
+const skey=(r,t,i)=>(r.p==="ring"?"":r.p)+"x"+t+i;
+const nsock=r=>S[r.sk]||6;
+const LIM=c=>{const o=parseFloat(S.v["lim_"+c.id]);return o>0?o:c.lim;};
+const EQ = [
+  {id:"ac", name:"A/C unit (and the cable beyond its FCU)"},
+  {id:"sw", name:"Smart switches (lighting)"},
+  {id:"fan",name:"Shelly relay and Dexa ventilation fan (beyond its FCU)"}
+];
+const EQOPT = [["","— choose —"],["disc","Disconnected for the test"],["low","Left connected: tested L+N to earth at 250 V"],["skip","Not tested: recorded as a limitation"]];
+const BOARDS = [
+  {id:"ze", name:"House origin (Ze)"},
+  {id:"sh", name:"Shed CU"},
+  {id:"gr", name:"Garden room CU"}
+];
+const RCDS = [
+  {id:"sm", name:"House submain RCBO (32 A)", inn:100},
+  {id:"sh", name:"Shed CU RCD/RCBOs (ring, lights)", inn:30},
+  {id:"gr", name:"Garden room CU RCD/RCBOs", inn:30}
+];
+const inn=d=>{const o=parseFloat(S.v["inn_"+d.id]);return o>0?o:d.inn;};
+const STEPS = [
+ {id:"setup", t:"Setup & instruments"},
+ {id:"visual",t:"Visual inspection"},
+ {id:"iso",   t:"Safe isolation"},
+ {id:"cpc",   t:"Continuity (R1+R2)"},
+ {id:"ring",  t:"Ring circuit"},
+ {id:"ir",    t:"Insulation resistance"},
+ {id:"pol",   t:"Polarity"},
+ {id:"live",  t:"Live: Ze, PFC, Zs"},
+ {id:"rcd",   t:"RCD tests"},
+ {id:"func",  t:"Functional & extras"},
+ {id:"labels",t:"Labels & notices"},
+ {id:"sum",   t:"Summary & export"}
+];
+const VIS = [
+ "SWA glands: correct size, armour clamped, earth tag/ring fitted, shrouds fitted, no strain on cores",
+ "SWA cores fully inserted in terminals, correct colours/identification, core insulation taken right up to the terminal, ferrules fitted where the terminal needs them",
+ "Submain buried at correct depth with warning tape/tiles; entry points sealed against water and vermin",
+ "Earth conductor sizes as designed: 14 mm² CU→rear of house, 10 mm² beyond; connections tight and labelled",
+ "PME/earthing arrangement as designed for the outbuildings (confirmed with electrician; 'Safety Electrical Connection' labels on the CU)",
+ "Consumer units/enclosures: correct IP rating, covers fitted, blanks in all spare ways, no damage",
+ "Device ratings match design: house RCBO 32 A 100 mA bidirectional; shed ring B32, shed lights B6; shed CU 32 A Type B MCB (no RCD) feeding the secondary submain; garden room ring B32, lights B6, A/C B10",
+ "Shed CU: primary submain (60 m SWA) terminated and glanded correctly; secondary submain (20 m SWA) leaves from the 32 A MCB with its own gland, armour earth and correct earth continuity back to the house",
+ "Cable sizes and routes match design; cables supported; safe zones / RCD protection for concealed cables",
+ "Socket outlets, switches, light fittings mounted securely, no damage, correct IP where required",
+ "Labels on every circuit way, warning notices (dual supply / Powerwall / PV isolator), circuit chart fitted",
+ "Terminations everywhere (CUs, sockets, switches, fittings): insulation within ≈1–2 mm of the terminal (no more bare copper than that), no trapped insulation under the clamp, all strands in, one conductor per terminal (ring: two only where the terminal allows), CPCs sleeved green/yellow, no overheating marks",
+ "Fire barriers / penetrations sealed; no cables in insulation or bundled in a way that limits current rating"
+];
+const ISO = [
+ "Warn everyone in the house you are about to switch power off.",
+ "Identify ALL sources: grid supply and the Powerwall (with its PV). Both reach the new CU through the splitter, upstream of its main switch, so that main switch cuts the CU off from them (next step).",
+ "Switch off the house RCBO feeding the outbuildings (this cuts the submain off from grid, PV and Powerwall) and lock it off with a padlock/lock-off device and a 'DANGER – DO NOT SWITCH ON' tag. Keep the key on you. The RCBO alone is enough while you work at the shed and garden room boards. When you open the house CU to work on the submain way (link line to earth there for R1+R2, or disconnect the submain conductors for insulation resistance), also switch off that CU's main switch. The CU holding the submain RCBO (the new Powerwall-backed one) and the old plastic CU are both fed from the Powerwall output through the splitter, upstream of their main switches, so that switch cuts the CU off from grid and Powerwall. The splitter and the incomer terminals above the main switch stay live: do not touch them. Prove the busbar and the submain terminals dead before you start. The old plastic CU and the EV charger CU can stay on.",
+ "PROVE your voltage indicator on a known live source or proving unit (GS38 leads/probes, fused).",
+ "TEST the circuit to be worked on dead: line–neutral, line–earth, neutral–earth (and at the shed/GR ends).",
+ "RE-PROVE the indicator on the known source. Only now treat it as dead.",
+ "Repeat this isolation each time you re-open a circuit. Re-prove if you take a break."
+];
+const LABELS = [
+ "HOUSE CU: each way labelled with the circuit it protects, including the new way as 'Supplies shed + garden room' (BS 7671 514.1.1, 514.8)",
+ "HOUSE CU: RCD test notice fitted – test the RCD/RCBO test buttons every six months (514.12.2)",
+ "HOUSE CU: periodic inspection notice fitted – date of inspection and recommended interval, filled in from the EIC (514.12.1)",
+ "HOUSE: warning notice for more than one source of supply (grid, PV, Powerwall) at the origin, meter and house CU – must be a physical label on the enclosure (514.15 / 514.11)",
+ "SHED CU: every way labelled (incomer, shed ring, shed lights, 32 A MCB to garden room); incomer labelled 'Fed from house CU, way X – isolate there'",
+ "SHED CU: RCD test notice and periodic inspection notice fitted",
+ "SHED CU: 'Safety Electrical Connection – do not remove' labels at the earthing connections, if the electrician specifies them",
+ "GARDEN ROOM CU: every way labelled (incomer, ring, lights, A/C); incomer labelled 'Fed from shed CU 32 A MCB – isolate there'",
+ "GARDEN ROOM CU: RCD test notice and periodic inspection notice fitted",
+ "SPD type and make at each CU noted for the EIC schedule (no label required, but record it)",
+ "Circuit chart fixed inside or beside each of the three boards (use the charts below), filled in and legible, with measured Zs values (514.9.1)",
+ "No mixed-colour cable warning needed (all cabling is to current colours) – confirm with the electrician"
+];
+const FUNC = [
+ "Operate every switch, isolator and control: correct operation, correct item switched",
+ "House RCBO test button trips it; shed and garden room RCD/RCBO test buttons trip them",
+ "Check all socket outlets for correct polarity with the tester's socket function (or plug-in tester) and no loose faces",
+ "Confirm A/C unit runs on the B10 radial and the manufacturer's maximum overcurrent device rating allows B10 (check nameplate/manual)",
+ "Check Powerwall/inverter backup and normal modes: supply to outbuildings works on grid and (if designed) on backup",
+ "Check phase/line identification and that the shed CU is fed only from the house RCBO via the primary submain and the garden room CU only from the shed CU 32 A MCB via the secondary submain",
+ "Confirm labels and notices fitted; circuit charts completed with measured Zs values",
+ "Take photos of terminations/boards before covers go on, and keep for the electrician"
+];
+
+/* ----------------------------------------------------------------- state */
+let S = {m:{}, v:{}, c:{}, sock:6, sock2:6, extra:[], step:"setup"};
+let STORE_OK=true;
+try{ const x=JSON.parse(localStorage.getItem(LS_KEY)||"null"); if(x) S=Object.assign(S,x);}catch(e){STORE_OK=false;}
+if(!S.m.inst) S.m.inst="Megger MFT1711";
+function save(){ try{localStorage.setItem(LS_KEY,JSON.stringify(S));STORE_OK=true;}catch(e){STORE_OK=false;} }
+const get=k=>S.v[k]??"";
+function num(k){ const s=String(get(k)).trim().replace(",","."); if(!s) return NaN; const n=parseFloat(s.replace(/^[<>≥≤]\s*/,"")); return isNaN(n)?NaN:n; }
+const circuits=()=>BASE_CIRCUITS.concat(S.extra);
+const fmt=(x,d=2)=>isNaN(x)?"—":x.toFixed(d);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* save a file to the device (works with no internet) */
+function saveFile(fn,txt,type){
+  try{
+    const u=URL.createObjectURL(new Blob([txt],{type:type||"text/plain"}));
+    const a=document.createElement("a"); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),3000); return true;
+  }catch(e){return false;}
+}
+
+/* ----------------------------------------------------- pass/fail engine */
+const R=(cls,t)=>({cls,t});
+const NA=R("na","—");
+function baseVal(c){ return c.base==="ze"?num("ze"):c.base==="sh"?num("zs_sh"):num("zs_gr"); }
+function checks(){
+  const out={};
+  const add=(key,sec,label,res)=>{out[key]={sec,label,res};};
+  circuits().forEach(c=>{
+    const r=num("r12_"+c.id);
+    let res=NA;
+    if(!isNaN(r)){
+      const b=baseVal(c); const room=isNaN(b)?LIM(c):LIM(c)-b;
+      if(r<0.005) res=R("warn","very low – check leads nulled");
+      else if(r>room) res=R("bad","too high (max ≈"+fmt(room)+" Ω)");
+      else res=R("ok","OK (max ≈"+fmt(room)+" Ω)");
+    }
+    add("dead:"+c.id,"cpc","R1+R2 – "+c.name,res);
+  });
+  RINGS.forEach(rg=>{
+    const r1=num(rg.p+"_r1"),rn=num(rg.p+"_rn"),r2=num(rg.p+"_r2");
+    let rr=NA;
+    if(![r1,rn,r2].some(isNaN)){
+      const d=Math.abs(r1-rn);
+      if(d>0.05) rr=R("warn","r1 and rn differ by "+fmt(d)+" Ω – check for cross-wiring/break");
+      else if(r2<r1*1.3||r2>r1*2.2) rr=R("warn","r2 ≈ "+fmt(r2/r1,2)+"× r1 (expect ≈1.67× for 2.5/1.5 T&E)");
+      else rr=R("ok","OK · R1+R2 ≈ "+fmt((r1+r2)/4,3)+" Ω");
+    }
+    add("ring:ends:"+rg.p,"ring",rg.name+": end-to-end r1/rn/r2",rr);
+    ["ln","le"].forEach(k=>{
+      const vals=[];
+      for(let i=0;i<nsock(rg);i++){const x=num(skey(rg,k,i)); if(!isNaN(x)) vals.push(x);}
+      let res=NA;
+      if(vals.length>=2){
+        const mn=Math.min(...vals),mx=Math.max(...vals);
+        if(mx-mn>0.10) res=R("warn","spread "+fmt(mx-mn)+" Ω – a socket may be on a spur or have a bad joint");
+        else res=R("ok","consistent ("+fmt(mn)+"–"+fmt(mx)+" Ω)");
+      }
+      add("xc:"+k+":"+rg.p,"ring",rg.name+": cross-connection "+(k==="ln"?"L–N":"L–CPC"),res);
+    });
+  });
+  circuits().forEach(c=>{
+    const v=["ln","le","ne"].map(k=>num("ir_"+k+"_"+c.id));
+    let res=NA;
+    if(!v.some(isNaN)){
+      const m=Math.min(...v);
+      if(m<1) res=R("bad","below 1 MΩ – fault");
+      else if(m<2) res=R("warn","1–2 MΩ – investigate");
+      else res=R("ok","OK (lowest "+fmt(m,1)+" MΩ)");
+    } else if(v.some(x=>!isNaN(x))) res=R("na","incomplete");
+    add("ir:"+c.id,"ir","IR – "+c.name,res);
+  });
+  EQ.forEach(q=>{
+    const v=get("eq_"+q.id);
+    add("eq:"+q.id,"ir","Electronic equipment – "+q.name,v==="disc"?R("ok","disconnected"):v==="low"?R("warn","reduced test only – tell electrician"):v==="skip"?R("warn","limitation – tell electrician"):NA);
+  });
+  circuits().forEach(c=>{
+    add("pol:"+c.id,"pol","Polarity – "+c.name,S.c["pol_"+c.id]?R("ok","confirmed"):NA);
+  });
+  const ze=num("ze");
+  add("ze","live","Ze at house origin",isNaN(ze)?NA:ze>0.35?R("warn","above 0.35 Ω – confirm DNO declared value"):R("ok","OK"));
+  BOARDS.forEach(b=>{
+    const p=num("pfc_"+b.id), ic=num("icn_"+b.id)||6;
+    add("pfc:"+b.id,"live","PFC – "+b.name,isNaN(p)?NA:p>ic?R("bad","exceeds "+ic+" kA rating"):R("ok","OK (≤"+ic+" kA)"));
+  });
+  circuits().forEach(c=>{
+    const z=num("zs_"+c.id);
+    let res=NA;
+    if(!isNaN(z)){
+      const b=baseVal(c), r=num("r12_"+c.id), calc=(isNaN(b)||isNaN(r))?NaN:b+r;
+      if(z>LIM(c)) res=R("bad","above max "+LIM(c).toFixed(2)+" Ω");
+      else if(!isNaN(calc)&&Math.abs(z-calc)/calc>0.25) res=R("warn","differs from "+fmt(calc)+" Ω expected – recheck");
+      else res=R("ok","OK (max "+LIM(c).toFixed(2)+" Ω)");
+    }
+    add("zs:"+c.id,"live","Zs – "+c.name,res);
+  });
+  RCDS.forEach(d=>{
+    const t=num("rcd_t_"+d.id);
+    let res=NA;
+    if(!isNaN(t)) res=t>300?R("bad","over 300 ms"):R("ok","OK ("+Math.round(t)+" ms)");
+    add("rcd:"+d.id,"rcd","RCD trip at 1×IΔn – "+d.name,res);
+    const b=num("rcd_b_"+d.id);
+    if(!isNaN(b)&&inn(d)===30) add("rcd5:"+d.id,"rcd","RCD 5×IΔn (optional) – "+d.name,b>40?R("warn","over 40 ms – note only (not required by BS 7671 now)"):R("ok","OK"));
+  });
+  const v0=num("vd0"), v1=num("vd1");
+  let vd=NA;
+  if(!isNaN(v0)&&!isNaN(v1)&&v0>0){const p=(v0-v1)/v0*100; vd=p>5?R("bad",fmt(p,1)+" % drop (max 5 %)"):p>3?R("warn",fmt(p,1)+" % (lighting limit 3 %)"):R("ok",fmt(p,1)+" %");}
+  add("vd","live","Voltage drop at shed end under load",vd);
+  const lk=num("leak");
+  add("leak","live","Standing leakage on submain",isNaN(lk)?NA:lk>30?R("warn",lk+" mA – above 30 mA target, find the source"):R("ok",lk+" mA"));
+  VIS.forEach((t,i)=>add("vis"+i,"visual","Visual: "+t,S.c["vis"+i]?R("ok","done"):NA));
+  ISO.forEach((t,i)=>add("iso"+i,"iso","Isolation: "+t,S.c["iso"+i]?R("ok","done"):NA));
+  FUNC.forEach((t,i)=>add("fn"+i,"func","Functional: "+t,S.c["fn"+i]?R("ok","done"):NA));
+  LABELS.forEach((t,i)=>add("lb"+i,"labels","Labels: "+t,S.c["lb"+i]?R("ok","done"):NA));
+  return out;
+}
+const CHECKS=checks;
+
+
+const MFT={
+setup:`<ul>
+<li><b>Two knobs.</b> LEFT knob = what you are doing (volts, Ω continuity, insulation voltage, L-PE loop, RCD mode). RIGHT knob = the sub-setting (e.g. <kbd>Z</kbd> / <kbd>Max Z</kbd> for loop, or the RCD rating in mA).</li>
+<li><b>Buttons.</b> Two <kbd>TEST</kbd> buttons (either works), two red <kbd>LOCK</kbd> buttons (hold TEST, then press LOCK to latch a test on) and <kbd>MODE</kbd> (changes options within a function: buzzer, loop mode, RCD phase/type).</li>
+<li><b>Before first use:</b> fresh batteries (display shows <kbd>bAt</kbd> when low); inspect leads and probes for cracks; the 3-wire lead set, the mains plug lead and the switched probe should all be in the case. <kbd>FUS</kbd> on the display means a blown fuse.</li>
+<li><b>Check the meter against a known source:</b> short the probes on Ω (reads ≈0.00 Ω), and confirm V reads ≈230 V on a socket you know is live, before you trust it.</li>
+<li><b>The MFT1711 has no results memory or Bluetooth</b>, so write each reading into this tool straight away. It also does not have R1+R2-by-loop, an L-N loop test or Type B RCD testing, so those aren't used in the steps here.</li>
+<li>Not sure about a screen or symbol? Your printed Quick Start Guide is the authority for this unit; these notes are a guide to the MFT1700-series manual.</li></ul>`,
+cpc:`<table><tr><th>Do this</th><th>On the MFT1711</th></tr>
+<tr><td>Select continuity</td><td>LEFT knob → <kbd>Ω</kbd> (continuity). Leads in the two probe sockets (L1 / L2).</td></tr>
+<tr><td>Null the leads</td><td>Touch the two probes (or clips) together and press <kbd>TEST</kbd>. A <kbd>z</kbd> null symbol shows and the reading goes to 0.00 Ω. To cancel, separate the leads and press TEST again. Re-null if you change leads or clips.</td></tr>
+<tr><td>Take a reading</td><td>No button press needed: the test starts automatically as soon as the probes touch the circuit. Read the Ω value when it settles.</td></tr>
+<tr><td>Buzzer</td><td><kbd>MODE</kbd> toggles it. It is set to 2 Ω by default, so it will beep on anything lower; ignore the buzzer and record the number.</td></tr>
+<tr><td>If it refuses</td><td><kbd>VOL 0-L</kbd> or an inhibited test means there is voltage (above ≈4 V) on the circuit. Stop, re-isolate and prove dead again.</td></tr></table>`,
+ring:`<table><tr><th>Do this</th><th>On the MFT1711</th></tr>
+<tr><td>Set up</td><td>LEFT knob → <kbd>Ω</kbd>. Null the leads (probes together → <kbd>TEST</kbd> → <kbd>z</kbd> appears).</td></tr>
+<tr><td>End-to-end</td><td>Hold one lead on each end of the conductor pair (e.g. L1 to L2). The reading appears automatically. Do L–L (r1), N–N (rn), E–E (r2).</td></tr>
+<tr><td>Cross-connected</td><td>Same dial position. Put the probe in each socket's line/neutral (or line/earth) hole; the reading appears as soon as you make contact.</td></tr>
+<tr><td>Tip</td><td>Use crocodile clips on the CU ends and the switched probe or a socket tester lead at the sockets, so you don't need three hands.</td></tr></table>`,
+ir:`<table><tr><th>Do this</th><th>On the MFT1711</th></tr>
+<tr><td>Select voltage</td><td>LEFT knob → <kbd>500 V</kbd> (insulation range). Leads in L1 and L2.</td></tr>
+<tr><td>Test</td><td>Connect the probes, then press and HOLD <kbd>TEST</kbd>. The display shows the test voltage and the resistance. Wait until the number stops changing, note it, then release.</td></tr>
+<tr><td>Discharge</td><td>After releasing, wait for the display to fall to zero before moving the leads: the tester discharges the circuit through itself.</td></tr>
+<tr><td>Hands-free</td><td>Hold TEST, then press a red <kbd>LOCK</kbd> button; press TEST again to release. The test voltage stays on the probes while locked, so don't touch them.</td></tr>
+<tr><td>If it refuses</td><td>It will not test if it finds more than about 50 V on the circuit. Re-isolate and prove dead.</td></tr></table>`,
+pol:`<p>Use the same <kbd>Ω</kbd> continuity setting as R1+R2 (nulled leads). Nothing new on the meter: the checks are just continuity from board to each point.</p>`,
+live:`<table><tr><th>Check</th><th>On the MFT1711</th></tr>
+<tr><td>Supply sanity check</td><td>LEFT knob → <kbd>V</kbd>. Connect to the supply, then press <kbd>TEST</kbd> to scroll L–E, N–E and L–N. Expect ≈230 V on L–E and L–N and ≈0 V on N–E. Check this before every loop test.</td></tr>
+<tr><td>Loop impedance (Ze, Zs)</td><td>LEFT knob → <kbd>L-PE</kbd>, RIGHT knob → <kbd>Z</kbd>. Use <kbd>MODE</kbd> to set <b>3Lo</b> (the default; needs all three leads, including the blue L3 lead).</td></tr>
+<tr><td>Which loop mode</td><td><b>Use 3Lo (non-trip) on everything here.</b> The house RCBO and the RCDs in the outbuilding boards are all in the loop path. <kbd>2Hi</kbd> (high current, ≈3–4 s) will trip an RCD, so only use it where no RCD is upstream.</td></tr>
+<tr><td>Run it</td><td>Press <kbd>TEST</kbd>. Large digits = loop impedance in Ω; small digits = prospective fault current. Don't pull the leads off mid-test.</td></tr>
+<tr><td>Noisy supply</td><td>The confidence meter extends the 3Lo test if there is noise (up to about 3 minutes). Press TEST to stop it when the number is steady.</td></tr>
+<tr><td>Ring circuit Zs</td><td>RIGHT knob → <kbd>Max Z</kbd>, then test at each socket. The tester keeps the highest value in the upper display; record that one.</td></tr>
+<tr><td>Where to connect</td><td>At sockets use the mains plug test lead. At boards use the 3-wire lead set with clips on line (red L1), neutral (green L2) and earth (blue L3), matching the diagram in your Quick Start Guide. A reverse-polarity warning on the display means the supply is wired wrong or the leads are swapped: stop.</td></tr>
+<tr><td>PFC</td><td>Read the small digits of the loop result (kA). The MFT1711's loop test is line–earth, which reads slightly lower than the true line–neutral figure. If a result is anywhere near the 6 kA device rating, tell the electrician rather than relying on it.</td></tr></table>`,
+rcd:`<table><tr><th>Do this</th><th>On the MFT1711</th></tr>
+<tr><td>Set the rating</td><td>RIGHT knob → the RCD's rating: <kbd>100</kbd> mA for the house RCBO, <kbd>30</kbd> mA for the others.</td></tr>
+<tr><td>Set the test</td><td>LEFT knob → <kbd>I</kbd> (×1, must trip within 300 ms). Hold <kbd>MODE</kbd> for about 2 s to cycle the type (AC, A, S) and match it to the device (type A or AC as marked on the RCBO). A quick press of MODE flips the start phase between 0° and 180°.</td></tr>
+<tr><td>Connect</td><td>Plug the mains test lead into a socket on the RCD-protected circuit, or clip onto the circuit at the board using the phase (L1) and earth (L2) leads as in the Quick Start Guide.</td></tr>
+<tr><td>Run it</td><td>Press <kbd>TEST</kbd>. The RCD trips and the tester shows the trip time in ms. Reset the RCD.</td></tr>
+<tr><td>Both phases</td><td>The manual tells you to test at 0° and 180° and use the higher time. BS 7671 now needs only one, but doing both is cheap, so record the higher.</td></tr>
+<tr><td>Optional extras</td><td><kbd>½I</kbd> (must NOT trip in 2 s), <kbd>5I</kbd> (30 mA devices, ≤40 ms), <kbd>RAMP</kbd> (finds the trip current) and <kbd>AUTO</kbd> (runs the full sequence; reset the RCD each time it trips, then use MODE to scroll the results).</td></tr>
+<tr><td>Messages</td><td><kbd>&gt;50V</kbd> = test stopped because the touch voltage reached the 50 V limit, which means a poor earth: stop and tell the electrician. <kbd>trp</kbd> = the supply tripped unexpectedly. <kbd>FRE</kbd> = supply frequency out of range.</td></tr></table>
+<p class="mut">Do the RCD tests last, after loop, PFC and voltage-drop readings, since each test trips and resets the device.</p>`
+};
+function mft(k){return `<div class="mft"><b>Megger MFT1711 – dial settings and buttons</b>${MFT[k]}</div>`;}
+/* --------------------------------------------------------------- render */
+const h=(k,extra="")=>`<span class="b na" data-s="${k}" ${extra}>—</span>`;
+function numIn(k,ph="",step="any"){return `<input type="number" inputmode="decimal" step="${step}" data-k="${k}" placeholder="${ph}" value="${esc(get(k))}">`;}
+function txtIn(k,ph=""){return `<input type="text" data-k="${k}" placeholder="${ph}" value="${esc(get(k))}">`;}
+function cmt(key){return `<input type="text" class="cm" data-k="cm_${key}" placeholder="Comment / location / photo ref (optional)" value="${esc(get("cm_"+key))}">`;}
+function checklist(prefix,arr){return arr.map((t,i)=>`<div class="item"><label class="chk"><input type="checkbox" data-c="${prefix}${i}" ${S.c[prefix+i]?"checked":""}><span>${esc(t)}</span></label>${cmt(prefix+i)}</div>`).join("");}
+const box=(cls,title,body)=>`<div class="box ${cls}"><b>${title}</b>${body}</div>`;
+
+function chartTbl(title,rows){
+  const g=k=>esc(get(k)||"");
+  return `<h3>${esc(title)}</h3><div class="tw"><table class="chart"><thead><tr><th>Way</th><th>Circuit</th><th>Device</th><th>Cable</th><th>RCD</th><th>R1+R2 (Ω)</th><th>Max Zs (Ω)</th><th>Measured Zs (Ω)</th><th>IR L-N / L-E / N-E (MΩ)</th></tr></thead><tbody>`+
+  rows.map((r,i)=>{const c=r.c?circuits().find(x=>x.id===r.c):null;
+    const ir=c?[g("ir_ln_"+c.id)||"–",g("ir_le_"+c.id)||"–",g("ir_ne_"+c.id)||"–"].join(" / "):"";
+    return `<tr><td>${r.w||i+1}</td><td>${esc(r.n)}</td><td>${esc(r.d)}</td><td>${esc(r.cb||"")}</td><td>${esc(r.rcd||"")}</td><td class="num">${r.r12?g(r.r12):""}</td><td class="num">${r.lim?esc(r.lim):""}</td><td class="num">${r.zs?g(r.zs):""}</td><td class="num">${ir}</td></tr>`;}).join("")+`</tbody></table></div>`;}
+function chartsHTML(){
+  const L=id=>LIM(circuits().find(c=>c.id===id)).toFixed(2);
+  return chartTbl("House CU – new way only (add to the existing house chart)",[
+    {w:"new",n:"Outbuildings submain (shed + garden room)",d:"32 A Type A bidirectional RCBO",cb:"10 mm² 3-core SWA (earth 14 mm² in house, 10 mm² beyond)",rcd:"100 mA",r12:"r12_sh",lim:L("sh"),zs:"zs_sh",c:"sh"}])+
+  chartTbl("Shed CU",[
+    {n:"Incomer from house (20 m T&E + 60 m SWA)",d:"100 A main switch",cb:"10 mm² 3-core SWA",rcd:"–"},
+    {n:"Shed ring",d:"B32",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_shring",lim:L("shring"),zs:"zs_shring",c:"shring"},
+    {n:"Shed lights",d:"B6",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_shlt",lim:L("shlt"),zs:"zs_shlt",c:"shlt"},
+    {n:"Garden room feed (20 m SWA)",d:"B32 Type B MCB",cb:"10 mm² 3-core SWA",rcd:"none",r12:"r12_gr",lim:L("gr"),zs:"zs_gr",c:"gr"}])+
+  chartTbl("Garden room CU",[
+    {n:"Incomer from shed CU",d:"100 A main switch",cb:"10 mm² 3-core SWA",rcd:"–"},
+    {n:"Socket ring",d:"B32 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ring",lim:L("ring"),zs:"zs_ring",c:"ring"},
+    {n:"Lighting",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt",lim:L("lt"),zs:"zs_lt",c:"lt"},
+    {n:"A/C radial (H1)",d:"B10 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ac",lim:L("ac"),zs:"zs_ac",c:"ac"},
+    {n:"SPD",d:"type / make: ______"},
+    {n:"Spare",d:""}])+
+  `<p class="mut">Figures fill in as you enter them on the earlier steps. Zs for the shed feed way is the Zs at the shed CU incomer. Copy onto the chart supplied with each unit, or print this page and fix it inside the door.</p>`;
+}
+
+const VIEWS={
+setup(){return `
+<div class="card"><h2>Setup &amp; instruments</h2>
+<p class="sub">Fill this in first. It goes at the top of the report for your electrician.</p>
+${STORE_OK?"":box("stop","This browser is not saving entries","It has blocked storage for files opened from the device. Open this file in Chrome, Edge or Firefox instead, or back up from the Summary step before closing the page.")}
+${mft("setup")}
+${box("","What you need",`<ul>
+<li>A multifunction installation tester (MFT) to BS EN 61557 with a current calibration certificate (usually valid 12 months). Writing the serial and calibration date down matters – an inspector will ask.</li>
+<li>GS38-compliant test leads/probes, a proving unit or known live source, and a separate two-pole voltage indicator.</li>
+<li>Lock-off kit and warning tags, a note pad or phone for photos, and the pack (section 8 limits).</li></ul>`)}
+${box("stop","Be realistic about your role","You can record these results, but the person who signs the Electrical Installation Certificate must be satisfied the tests were done competently and may re-do some. Use this tool to prepare, find problems early and give the electrician clean data – not to replace their sign-off. Anything marked FAIL: stop, fix, re-test.")}
+<div class="grid2">
+<div><label class="mut">Tester name</label>${txtInM("name")}</div>
+<div><label class="mut">Date</label><input type="date" data-m="date" value="${esc(S.m.date||"")}"></div>
+<div><label class="mut">Instrument make/model</label>${txtInM("inst")}</div>
+<div><label class="mut">Instrument serial no.</label>${txtInM("serial")}</div>
+<div><label class="mut">Calibration due/date</label>${txtInM("cal")}</div>
+<div><label class="mut">Supply earthing (confirm)</label>${txtInM("sup","e.g. TN-C-S (PME)")}</div>
+</div>
+<h3>Quick reference – what you are testing</h3>
+<ul>
+<li><b>Primary submain:</b> house CU (Powerwall-backed) → <b>house RCBO 32 A, 100 mA bidirectional</b> → 20 m T&amp;E (14 mm² earth) then 60 m SWA → <b>shed CU</b>, which carries its own <b>ring circuit</b>, <b>light radial</b> and a <b>32 A MCB</b> (no RCD, so the garden room RCBOs are the only 30 mA devices in that leg and can be tested on their own).</li><li><b>Secondary submain:</b> shed CU 32 A MCB → 20 m SWA → <b>garden room CU</b>.</li>
+<li>Earth: 14 mm² from house CU to rear of house, then 10 mm² (plus the SWA armour/3rd core as designed).</li>
+<li>Garden room CU: ring B32, lighting B6, A/C radial <b>B10</b>. Shed CU ring and light radial device ratings: confirm on the devices and change the "Max Zs" box in the live step if different (B32 1.10 Ω, B16 2.19, B10 3.50, B6 5.82).</li>
+<li>Limits shown are 80 % of the BS 7671 Type B maximum Zs (Zs measured at normal conductor temperature must not exceed these).</li></ul>
+</div>`;},
+
+visual(){return `<div class="card"><h2>Visual inspection</h2>
+<p class="sub">Always first, always with power OFF. Tick each item only once you have actually looked at it.</p>
+${box("why","Why","Many faults (loose terminals, wrong glands, damaged cable) are found by eye. It's also a regulation (BS 7671 Part 6) – testing without inspection isn't a valid verification.")}
+${checklist("vis",VIS)}</div>`;},
+
+iso(){return `<div class="card"><h2>Safe isolation</h2>
+<p class="sub">Do this before every dead test, and repeat if you leave and come back. Your install has THREE possible energy sources.</p>
+${box("stop","Powerwall / PV","Isolating the grid alone is NOT enough. The Powerwall can keep the house CU live. Switch off battery, PV and grid, then prove dead. Do not carry out loop (Zs/Ze) or PFC tests in island/backup mode – readings will be wrong.")}
+${checklist("iso",ISO)}</div>`;},
+
+cpc(){return `<div class="card"><h2>Continuity of protective conductors (R1+R2)</h2>
+<p class="sub">Dead test. Measures the resistance of line out + earth back for each circuit. Tester on 'Continuity / R1+R2' (200 mA or more).</p>
+${mft("cpc")}
+${box("","How to do it",`<ol>
+<li>Safely isolate (see step 3). Disconnect nothing else; leave circuits connected at the CU.</li>
+<li><b>Null the leads</b>: clip the two test leads together, press Zero/Null until the tester reads 0.00 Ω. (If you skip this, every reading is too high.)</li>
+<li>At the CU, link the circuit's <b>line</b> terminal and its <b>earth (CPC)</b> terminal together at the board end (short wire/crocodile clips).</li>
+<li>Go to the far end of the circuit (the furthest socket, light or the A/C isolator). Measure between line and earth there. The reading is R1+R2. Record it below.</li>
+<li>For the <b>two submain</b> rows: link line to earth at the house end and read line to earth at the shed CU (primary, expect ≈0.28 Ω). Then do the same reading at the garden room CU (expect ≈0.36 Ω); that value includes the primary submain. To check the 20 m secondary on its own, link line to earth at the shed CU end of the secondary and read at the garden room CU (≈0.07 Ω). For the shed circuits, link at the shed CU and read at the far socket/light.</li>
+<li>Remove your link wires.</li></ol>`)}
+${box("why","Reading it","Higher than expected usually means a loose terminal, a missed conductor or a break. Much lower than expected: likely a parallel path (a borrowed earth) or the leads weren't nulled right. Temperature changes it slightly; the limits already allow for that.")}
+<div class="tw"><table><thead><tr><th>Circuit</th><th>R1+R2 (Ω)</th><th>Result</th></tr></thead><tbody>
+${circuits().map(c=>`<tr><td>${esc(c.name)}<div class="mut">${esc(c.dev)}</div></td><td class="num">${numIn("r12_"+c.id,"0.00")}</td><td>${h("dead:"+c.id)}</td></tr>`).join("")}
+</tbody></table></div>
+<button class="sm" data-act="addc">+ Add another circuit</button></div>`;},
+
+ring(){return `<div class="card"><h2>Ring circuits</h2>
+<p class="sub">Dead tests, done for BOTH rings: the shed ring first (it is on the primary submain), then the garden room ring. Three end-to-end readings each, then cross-connection readings at each socket. This proves each ring is a true, unbroken ring with no hidden spurs.</p>
+${mft("ring")}
+${box("","Part A – end-to-end (at the CU, ring disconnected from the MCB/RCBO and its terminals)",`<ol>
+<li>Safely isolate (both submains if you are working in the shed CU). Pull the ring's line, neutral and earth out of the CU so you can see all six ends: L1, L2, N1, N2, E1, E2 (1 and 2 are the two cables).</li>
+<li>Null the leads (see the MFT1711 box above). Measure <b>L1 to L2</b> = <b>r1</b>, <b>N1 to N2</b> = <b>rn</b>, <b>E1 to E2</b> = <b>r2</b>. r1 and rn should be about the same; r2 is about 1.67× larger for 2.5 mm²/1.5 mm² T&amp;E.</li></ol>`)}
+${box("","Part B – cross-connect and test each socket",`<ol>
+<li>Join L1 to N2 and L2 to N1 (cross-connect). At every socket measure <b>L–N</b>: the readings should be nearly identical.</li>
+<li>Remove that link. Now join L1 to E2 and L2 to E1. At every socket measure <b>L–E (CPC)</b>. Readings rise then fall along the ring, but only by a small amount. A reading much higher or lower marks a break, spur or bad joint at or near that socket.</li>
+<li>Remove all links, reconnect the ring properly (both cables in each terminal, nothing doubled up), then proceed.</li></ol>`)}
+</div>
+${RINGS.map(rg=>{let rows="";for(let i=0;i<nsock(rg);i++)rows+=`<tr><td>Socket ${i+1}</td><td class="num">${numIn(skey(rg,"ln",i),"0.00")}</td><td class="num">${numIn(skey(rg,"le",i),"0.00")}</td></tr>`;
+return `<div class="card"><h3 style="margin-top:0">${rg.name}</h3>
+<div class="grid2">
+<div><label class="mut">r1 line–line (Ω)</label>${numIn(rg.p+"_r1","0.00")}</div>
+<div><label class="mut">rn neutral–neutral (Ω)</label>${numIn(rg.p+"_rn","0.00")}</div>
+<div><label class="mut">r2 earth–earth (Ω)</label>${numIn(rg.p+"_r2","0.00")}</div>
+<div><label class="mut">Result</label><div style="padding-top:8px">${h("ring:ends:"+rg.p)}</div></div></div>
+<div class="tw"><table><thead><tr><th>Socket</th><th>L–N (Ω)</th><th>L–CPC (Ω)</th></tr></thead><tbody>${rows}</tbody></table></div>
+<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px"><span>L–N: ${h("xc:ln:"+rg.p)}</span><span>L–CPC: ${h("xc:le:"+rg.p)}</span></div>
+<button class="sm" data-act="addsock" data-ring="${rg.p}">+ Add socket row</button>
+<p class="mut">The highest L–CPC reading (the ring's R1+R2) also goes in the R1+R2 step for this ring.</p></div>`;}).join("")}`;},
+
+ir(){return `<div class="card"><h2>Insulation resistance</h2>
+<p class="sub">Dead test at 500 V DC. Required minimum is 1 MΩ; anything under 2 MΩ should be investigated.</p>
+${mft("ir")}
+${box("","Two submains: test each separately",`<ol><li><b>Primary:</b> isolate at the house. At the shed CU disconnect the incoming SWA from the main switch (or isolate the whole shed CU) so the shed ring, lights and the secondary submain are out of circuit. Test the 60 m SWA core-to-core and core-to-armour.</li><li><b>Secondary:</b> at the shed CU disconnect the 32 A MCB output and at the garden room CU disconnect the incoming SWA. Test the 20 m SWA the same way.</li><li>Then test each final circuit (shed ring, shed lights, garden room ring, lights, A/C) with its own breaker on and everything electronic disconnected. Reconnect and re-test polarity as you go.</li></ol>`)}
+${box("stop","Before you press test","Remove or unplug anything electronic: A/C unit, LED drivers, dimmers, smart switches, surge protectors, USB socket faces. 500 V can damage them and gives false low readings. Disconnect neutral/earth links at the CU as the instructions for your board say, or test at the circuit end with the ways switched off.")}
+${box("","How to do it",`<ol>
+<li>Safely isolate. Switch all circuit breakers ON in the board (so conductors are included), main isolation OFF and locked.</li>
+<li>Set the tester to 500 V. For each circuit measure <b>L–N, L–E, N–E</b>. Hold the test button until the reading steadies.</li>
+<li>Record the number. If the tester shows ">200" or ">500" type 200 or 500 in the box.</li>
+<li>For the SWA submain: also test between each core and the armour/earth, and core to core, with the cable disconnected at both ends if possible.</li>
+<li>Discharge: the tester does this itself; wait for it to finish before removing leads.</li></ol>`)}
+<div class="tw"><table><thead><tr><th>Circuit</th><th>L–N (MΩ)</th><th>L–E (MΩ)</th><th>N–E (MΩ)</th><th>Result</th></tr></thead><tbody>
+${circuits().map(c=>`<tr><td>${esc(c.name)}</td><td class="num">${numIn("ir_ln_"+c.id,"≥1")}</td><td class="num">${numIn("ir_le_"+c.id,"≥1")}</td><td class="num">${numIn("ir_ne_"+c.id,"≥1")}</td><td>${h("ir:"+c.id)}</td></tr>`).join("")}
+</tbody></table></div>
+<h3>Electronic equipment and the wiring beyond the FCUs</h3>
+${box("stop","Keep 500 V away from electronics","A/C unit, smart switches, Shelly relays and the Dexa fan must not see 500 V. Switch each FCU off and take out its fuse, then test the board-to-FCU cable. Test the short run beyond it only with the equipment disconnected at both ends, or record it as a limitation.")}
+<div class="tw"><table><thead><tr><th>Equipment</th><th>What you did</th><th>Result</th></tr></thead><tbody>
+${EQ.map(q=>`<tr><td>${esc(q.name)}</td><td><select data-k="eq_${q.id}">${EQOPT.map(o=>`<option value="${o[0]}" ${get("eq_"+q.id)===o[0]?"selected":""}>${o[1]}</option>`).join("")}</select>${cmt("eq_"+q.id)}</td><td>${h("eq:"+q.id)}</td></tr>`).join("")}
+</tbody></table></div>
+<p class="mut">After reconnecting, repeat polarity and continuity on that circuit and confirm the equipment still works.</p></div>`;},
+
+pol(){return `<div class="card"><h2>Polarity</h2>
+<p class="sub">Dead test (with continuity leads). Proves line goes where line should, neutral where neutral should, and no switch is in the neutral.</p>
+${mft("pol")}
+${box("","How to do it",`<ol>
+<li>Safely isolate. Use the continuity range.</li>
+<li>Single pole switches (lights): with the switch ON, measure from the line terminal at the board to the switch line terminal; switch OFF, the reading goes open. Confirm the switch breaks the <b>line</b>, not the neutral.</li>
+<li>Sockets: with the ring links back in, measure from the board line to the line pin on each socket, neutral to neutral, CPC to earth pin. The same for the A/C isolator.</li>
+<li>Check that the shed/GR boards' line, neutral, earth arrive on the correct SWA cores (brown→L, blue→N, black/grey as designed, armour→earth).</li></ol>`)}
+<p class="mut">This is also re-checked live in the next step. Tick when confirmed for the whole circuit.</p>
+${circuits().map(c=>`<div class="item"><label class="chk"><input type="checkbox" data-c="pol_${c.id}" ${S.c["pol_"+c.id]?"checked":""}><span>${esc(c.name)}</span></label>${cmt("pol_"+c.id)}</div>`).join("")}</div>`;},
+
+live(){return `<div class="card"><h2>Live tests: Ze, prospective fault current, Zs</h2>
+${mft("live")}
+${box("stop","Danger – live working","Only do this after ALL dead tests pass and the test records are complete. Re-energise on GRID, not on Powerwall. Keep leads GS38, use the tester's own 'no-trip'/loop function, fit all covers, and have someone nearby. Stop if anything smells, buzzes or the tester warns of high touch voltage.")}
+<h3>Ze – external earth fault loop impedance</h3>
+<ol><li>Main switch OFF, locked, tails disconnected from the load side or the CU main switch off. Put the tester on Ze (earth loop, no-trip). Measure at the supply side of the main switch between line and the earthing terminal.</li>
+<li>Take 2–3 readings; use the highest.</li></ol>
+<div class="grid2"><div><label class="mut">Ze (Ω)</label>${numIn("ze","≈0.2–0.35")}</div><div><label class="mut">Result</label><div style="padding-top:8px">${h("ze")}</div></div></div>
+<h3>PFC – prospective fault current</h3>
+<p class="sub">At each board, read PFC (L–N and L–E; use the larger). It must not exceed the rated breaking capacity of the devices (usually 6 kA; check the label).</p>
+<div class="tw"><table><thead><tr><th>Board</th><th>PFC (kA)</th><th>Device rating (kA)</th><th>Result</th></tr></thead><tbody>
+${BOARDS.map(b=>`<tr><td>${b.name}</td><td class="num">${numIn("pfc_"+b.id,"0.00")}</td><td class="num">${numIn("icn_"+b.id,"6")}</td><td>${h("pfc:"+b.id)}</td></tr>`).join("")}
+</tbody></table></div>
+<h3>Zs – earth fault loop impedance, at each circuit</h3>
+${box("","How",`<ol><li>Power on from the grid. Tester on loop (no-trip / RCD-safe if available; use the high current mode only if the RCD isn't in circuit).</li>
+<li>Measure at the board for the submain rows (line to earth at the incoming terminals), and at the far end of each final circuit (last socket, last light, A/C isolator).</li>
+<li>For the ring, measure at the socket that gave the highest L–CPC cross-connect reading.</li><li>Work outwards: house origin (Ze), then the shed CU incoming, then the shed ring and lights, then the garden room CU incoming, then the garden room circuits. The shed circuits are checked against the shed CU reading, and the garden room circuits against the garden room CU reading.</li>
+<li>Take the highest of 2–3 readings. The tool compares with the limit and flags if the result isn't close to Ze (or GR board Zs) + R1+R2.</li></ol>`)}
+<div class="tw"><table><thead><tr><th>Circuit</th><th>Max Zs</th><th>Pack predicts</th><th>Measured Zs (Ω)</th><th>Result</th></tr></thead><tbody>
+${circuits().map(c=>`<tr><td>${esc(c.name)}<div class="mut">${esc(c.dev)}</div></td><td class="num"><input type="number" step="any" data-k="lim_${c.id}" placeholder="${c.lim.toFixed(2)}" value="${esc(get("lim_"+c.id))}"></td><td class="mut">${esc(c.pred)}</td><td class="num">${numIn("zs_"+c.id,"0.00")}</td><td>${h("zs:"+c.id)}</td></tr>`).join("")}
+</tbody></table></div>
+<h3>Voltage drop and leakage (informative)</h3>
+<div class="grid2">
+<div><label class="mut">L–N voltage at shed CU, no load (V)</label>${numIn("vd0","230")}</div>
+<div><label class="mut">L–N voltage at shed CU, with heavy load on (V)</label>${numIn("vd1","")}</div>
+<div><label class="mut">Result</label><div style="padding-top:8px">${h("vd")}</div></div>
+<div><label class="mut">Standing leakage on submain (mA) – clamp meter on L+N together</label>${numIn("leak","")}</div>
+<div><label class="mut">Result</label><div style="padding-top:8px">${h("leak")}</div></div></div></div>`;},
+
+rcd(){return `<div class="card"><h2>RCD tests</h2>
+<p class="sub">Current BS 7671 (A2 onwards, including A4:2026) needs one test: an a.c. residual current of 1×IΔn must trip the device in 300 ms or less. The old 5× / 40 ms test is no longer required, so it's optional here.</p>
+${mft("rcd")}
+${box("","How",`<ol>
+<li>Power on from the grid. Plug the tester into a socket on the circuit, or clip onto the circuit at the board.</li>
+<li>Select RCD test, set the tester IΔn to the device's rating (100 mA for the house RCBO, 30 mA for 30 mA devices), current ×1, a.c. type, 0° phase (one polarity is enough).</li>
+<li>Press test. The device trips and the tester shows the time in ms. Reset the device.</li>
+<li>Press the device's own TEST button to prove the mechanism, then reset.</li></ol>`)}
+<div class="tw"><table><thead><tr><th>Device</th><th>IΔn (mA)</th><th>Trip time ×1 (ms)</th><th>Result</th><th>Optional ×5 (ms)</th></tr></thead><tbody>
+${RCDS.map(d=>`<tr><td>${d.name}</td><td class="num"><input type="number" step="any" data-k="inn_${d.id}" placeholder="${d.inn}" value="${esc(get("inn_"+d.id))}"></td><td class="num">${numIn("rcd_t_"+d.id,"≤300")}</td><td>${h("rcd:"+d.id)}</td><td class="num">${numIn("rcd_b_"+d.id,"")} ${inn(d)===30?h("rcd5:"+d.id):""}</td></tr>`).join("")}
+</tbody></table></div>
+<p class="mut">If the house 100 mA bidirectional RCBO is of a type that may not trip correctly with a Powerwall present, take it up with the electrician; record the time as measured.</p></div>`;},
+
+func(){return `<div class="card"><h2>Functional checks &amp; final items</h2>
+<p class="sub">Next: labels and notices, then the summary.</p>${checklist("fn",FUNC)}</div>`;},
+
+labels(){return `<div class="card"><h2>Labels &amp; notices</h2>
+<p class="sub">Last step. Since BS 7671 Amendment 2 the RCD and inspection notices may be given in the installation documents rather than as stickers, but fit them anyway; the multiple-supply warning must be a physical label. Your electrician finalises the wording and which notices apply.</p>${checklist("lb",LABELS)}</div>
+<div class="card"><h2>Circuit charts</h2><p class="sub">Print this page (Print on the Summary step) or copy these onto each board's own chart.</p>${chartsHTML()}</div>`;},
+
+sum(){return `<div class="card"><h2>Summary &amp; export</h2>
+<p class="sub">Everything you have entered, with pass/fail against the limits.</p>
+<div id="kpis" class="kpi"></div>
+<div id="issues"></div>
+<div class="row noprint"><button class="p" data-act="copy">Copy report</button><button class="s" data-act="dl">Download as text file</button><button class="s" data-act="print">Print</button><button class="s" data-act="reset">Clear all data</button></div>
+<h3>Move your entries to another copy</h3>
+<p class="mut">Back up saves every entry, tick and comment as a small .json file. Restore loads that file into this copy (it replaces what is here). Use it to move results between the online page and this app, or between devices.</p>
+<div class="row noprint"><button class="s" data-act="bak">Back up data</button><button class="s" data-act="bakcopy">Copy backup text</button><button class="s" data-act="restore">Restore backup file</button><input type="file" id="restoreFile" accept=".json,application/json,text/plain" hidden></div>
+<h3>Report text</h3><textarea id="rep" readonly></textarea>
+<h3>Restore from pasted backup text</h3><textarea id="pasteBak" style="min-height:80px" placeholder="Paste backup text here, then press Restore pasted text"></textarea><div class="row noprint"><button class="s" data-act="restorepaste">Restore pasted text</button></div>
+<p class="mut">Entries are saved on this phone or computer and need no internet. On an iPhone, the home-screen icon keeps its own data, separate from Safari: restore your backup inside the icon version.</p></div>`;}
+};
+function txtInM(k,ph=""){return `<input type="text" data-m="${k}" placeholder="${ph}" value="${esc(S.m[k]||"")}">`;}
+
+/* ------------------------------------------------------------ rendering */
+function renderNav(res){
+  const secOf={setup:null,visual:["visual"],iso:["iso"],cpc:["cpc"],ring:["ring"],ir:["ir"],pol:["pol"],live:["live"],rcd:["rcd"],func:["func"],labels:["labels"],sum:null};
+  document.getElementById("nav").innerHTML=STEPS.map((s,i)=>{
+    let cls="";
+    const sec=secOf[s.id];
+    if(sec){
+      const list=Object.values(res).filter(x=>sec.includes(x.sec));
+      if(list.some(x=>x.res.cls==="bad")) cls="bad"; else if(list.some(x=>x.res.cls==="warn")) cls="warn";
+      else if(list.length&&list.every(x=>x.res.cls==="ok")) cls="ok";
+    }
+    return `<button data-step="${s.id}" class="${S.step===s.id?"on":""}"><span class="n ${cls}">${cls==="ok"?"✓":cls==="bad"?"!":i+1}</span>${s.t}</button>`;
+  }).join("");
+}
+function view(){
+  document.getElementById("main").innerHTML=VIEWS[S.step]();
+  window.scrollTo(0,0);
+  update();
+}
+function update(){
+  const res=checks();
+  document.querySelectorAll("[data-s]").forEach(el=>{const x=res[el.dataset.s]; if(x){el.className="b "+x.res.cls; el.textContent=x.res.t;}});
+  renderNav(res);
+  const all=Object.values(res);
+  const n=k=>all.filter(x=>x.res.cls===k).length;
+  const bad=n("bad"),warn=n("warn"),ok=n("ok");
+  const ov=document.getElementById("overall");
+  ov.textContent=bad?bad+" FAIL":warn?warn+" to check":ok+" recorded";
+  ov.style.background=bad?"var(--badbg)":warn?"var(--warnbg)":"var(--acc2)";
+  ov.style.color=bad?"var(--bad)":warn?"var(--warn)":"var(--acc)";
+  const off=document.getElementById("offl");
+  off.textContent=STORE_OK?"Saving on this device":"NOT saving – back up";
+  if(S.step==="sum"){
+    document.getElementById("kpis").innerHTML=`<div style="background:var(--okbg);color:var(--ok)"><b>${ok}</b>pass</div><div style="background:var(--warnbg);color:var(--warn)"><b>${warn}</b>check</div><div style="background:var(--badbg);color:var(--bad)"><b>${bad}</b>fail</div><div style="background:var(--acc2);color:var(--mut)"><b>${n("na")}</b>not done</div>`;
+    const iss=all.filter(x=>x.res.cls==="bad"||x.res.cls==="warn");
+    document.getElementById("issues").innerHTML=iss.length?`<h3>Needs attention</h3><ul>${iss.map(x=>`<li><span class="b ${x.res.cls}">${x.res.cls==="bad"?"FAIL":"CHECK"}</span> ${esc(x.label)} – ${esc(x.res.t)}</li>`).join("")}</ul>`:(ok?`<p class="b ok">No fails or warnings in what has been entered.</p>`:"");
+    document.getElementById("rep").value=report(res);
+  }
+}
+function report(res){
+  const L=[];const m=S.m;
+  L.push("GARDEN ROOM & SHED – PRE-INSPECTION TEST RECORD (BS 7671:2018+A4:2026)");
+  L.push("Tester: "+(m.name||"-")+"   Date: "+(m.date||"-"));
+  L.push("Instrument: "+(m.inst||"-")+"  S/N "+(m.serial||"-")+"  Cal: "+(m.cal||"-")+"   Supply: "+(m.sup||"-"));
+  L.push("Prepared by the installer for the verifying electrician; not a certificate.\n");
+  const sec=(t,keys)=>{L.push("== "+t+" =="); keys.forEach(k=>{const x=res[k]; if(x) L.push(" ["+x.res.cls.toUpperCase().replace("NA","--")+"] "+x.label+": "+x.res.t);}); L.push("");};
+  const byS=s=>Object.keys(res).filter(k=>res[k].sec===s);
+  const val=(k)=>get(k)===""?"-":get(k);
+  L.push("== R1+R2 (ohm) ==");circuits().forEach(c=>L.push(" "+c.name+": "+val("r12_"+c.id)+"  ["+res["dead:"+c.id].res.t+"]"));L.push("");
+  RINGS.forEach(rg=>{L.push("== "+rg.name+" ==");L.push(" r1 "+val(rg.p+"_r1")+"  rn "+val(rg.p+"_rn")+"  r2 "+val(rg.p+"_r2")+"  -> "+res["ring:ends:"+rg.p].res.t);
+    for(let i=0;i<nsock(rg);i++)L.push(" Socket "+(i+1)+": L-N "+val(skey(rg,"ln",i))+"  L-CPC "+val(skey(rg,"le",i)));
+    L.push(" Cross-connect L-N: "+res["xc:ln:"+rg.p].res.t+" | L-CPC: "+res["xc:le:"+rg.p].res.t);L.push("");});
+  L.push("== Insulation resistance (Mohm @500V) ==");circuits().forEach(c=>L.push(" "+c.name+": L-N "+val("ir_ln_"+c.id)+"  L-E "+val("ir_le_"+c.id)+"  N-E "+val("ir_ne_"+c.id)+"  ["+res["ir:"+c.id].res.t+"]"));L.push("");
+  L.push("== Electronic equipment during IR ==");EQ.forEach(q=>{const o=EQOPT.find(o=>o[0]===get("eq_"+q.id));L.push(" "+q.name+": "+(o&&o[0]?o[1]:"-")+"  ["+res["eq:"+q.id].res.t+"]");});L.push("");
+  sec("Polarity",byS("pol"));
+  L.push("== Live ==");L.push(" Ze: "+val("ze")+" ohm  ["+res.ze.res.t+"]");
+  BOARDS.forEach(b=>L.push(" PFC "+b.name+": "+val("pfc_"+b.id)+" kA (rating "+(get("icn_"+b.id)||6)+")  ["+res["pfc:"+b.id].res.t+"]"));
+  circuits().forEach(c=>L.push(" Zs "+c.name+": "+val("zs_"+c.id)+" ohm (max "+LIM(c).toFixed(2)+")  ["+res["zs:"+c.id].res.t+"]"));
+  L.push(" Voltage drop: no-load "+val("vd0")+" V, loaded "+val("vd1")+" V  ["+res.vd.res.t+"]");
+  L.push(" Leakage: "+val("leak")+" mA  ["+res.leak.res.t+"]");L.push("");
+  L.push("== RCD (1xIdn, ms) ==");RCDS.forEach(d=>L.push(" "+d.name+" ("+inn(d)+" mA): "+val("rcd_t_"+d.id)+" ms  ["+res["rcd:"+d.id].res.t+"]"+(get("rcd_b_"+d.id)?"  x5: "+get("rcd_b_"+d.id)+" ms":"")));L.push("");
+  ["visual","iso","func","labels"].forEach(s=>{const k=byS(s);L.push("== "+({visual:"Visual inspection",iso:"Isolation",func:"Functional",labels:"Labels & notices"})[s]+" == "+k.filter(x=>res[x].res.cls==="ok").length+"/"+k.length+" ticked");});
+  L.push("");L.push("Comments:");
+  let nc=0;
+  const lab=(k)=>{const m=k.match(/^(vis|iso|fn|lb)(\d+)$/);if(m){const a={vis:VIS,iso:ISO,fn:FUNC,lb:LABELS}[m[1]][+m[2]];return a.slice(0,70);}if(k.startsWith("eq_")){const q=EQ.find(q=>q.id===k.slice(3));return "Equipment – "+(q?q.name:k);}if(k.startsWith("pol_")){const c=circuits().find(c=>c.id===k.slice(4));return "Polarity – "+(c?c.name:k);}return k;};
+  Object.keys(S.v).filter(k=>k.startsWith("cm_")&&String(S.v[k]).trim()).forEach(k=>{nc++;L.push(" - "+lab(k.slice(3))+": "+S.v[k]);});
+  if(!nc)L.push(" none");
+  L.push("");L.push("Open items (FAIL / CHECK):");
+  const iss=Object.values(res).filter(x=>x.res.cls==="bad"||x.res.cls==="warn");
+  iss.length?iss.forEach(x=>L.push(" - "+x.label+": "+x.res.t)):L.push(" none");
+  return L.join("\n");
+}
+
+/* --------------------------------------------------------------- events */
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.k!==undefined){S.v[t.dataset.k]=t.value;}
+  else if(t.dataset.m!==undefined){S.m[t.dataset.m]=t.value;}
+  else return;
+  save();update();
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.dataset.c){S.c[t.dataset.c]=t.checked;save();update();}
+  else if(t.id==="restoreFile"&&t.files&&t.files[0]){
+    const fr=new FileReader();
+    fr.onload=()=>{
+      try{
+        const x=JSON.parse(fr.result); if(!x||typeof x!=="object"||!x.v||!x.c) throw 0;
+        if(!confirm("Replace everything entered in this copy with the backup?")) return;
+        S=Object.assign({m:{},v:{},c:{},sock:6,sock2:6,extra:[]},x,{step:"sum"}); save(); view();
+      }catch(_){alert("That isn't a valid backup file from this recorder.");}
+      t.value="";
+    };
+    fr.readAsText(t.files[0]);
+  }
+});
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.step){S.step=b.dataset.step;save();view();return;}
+  const a=b.dataset.act;
+  if(a==="addsock"){const rg=RINGS.find(r=>r.p===b.dataset.ring)||RINGS[1];S[rg.sk]=nsock(rg)+1;save();view();}
+  else if(a==="addc"){
+    const n=prompt("Circuit name (e.g. Shed sockets):"); if(!n) return;
+    const dev=prompt("Protective device, e.g. B16:","B16")||"B16";
+    const lims={B6:5.82,B10:3.5,B16:2.19,B20:1.75,B25:1.4,B32:1.1};
+    const key=dev.toUpperCase().replace(/\s/g,"");
+    let lim=lims[key]; if(!lim){const x=parseFloat(prompt("Max Zs in ohms for "+dev+" (from section 8):",""));if(!x)return;lim=x;}
+    S.extra.push({id:"x"+Date.now(),name:n,dev:dev,lim:lim,pred:"—",base:"gr"});save();view();
+  }
+  else if(a==="copy"){
+    const ta=document.getElementById("rep");
+    try{await navigator.clipboard.writeText(ta.value);b.textContent="Copied";}catch(_){ta.select();try{document.execCommand("copy");b.textContent="Copied";}catch(__){b.textContent="Select text & copy";}}
+    setTimeout(()=>b.textContent="Copy report",1800);
+  }
+  else if(a==="dl"){
+    if(!saveFile("garden-room-test-record.txt",document.getElementById("rep").value,"text/plain")){document.getElementById("rep").select();b.textContent="Download failed – copy the text";setTimeout(()=>b.textContent="Download as text file",3000);}
+  }
+  else if(a==="bak"){
+    const fn="garden-room-test-backup-"+new Date().toISOString().slice(0,10)+".json";
+    if(!saveFile(fn,JSON.stringify(S),"application/json")){b.textContent="Backup failed";setTimeout(()=>b.textContent="Back up data",3000);}
+  }
+  else if(a==="bakcopy"){
+    try{await navigator.clipboard.writeText(JSON.stringify(S));b.textContent="Copied";}catch(_){b.textContent="Copy failed";}
+    setTimeout(()=>b.textContent="Copy backup text",2000);
+  }
+  else if(a==="restorepaste"){
+    try{const x=JSON.parse(document.getElementById("pasteBak").value); if(!x||typeof x!=="object"||!x.v||!x.c) throw 0;
+      if(!confirm("Replace everything entered here with the pasted backup?")) return;
+      S=Object.assign({m:{},v:{},c:{},sock:6,sock2:6,extra:[]},x,{step:"sum"}); save(); view();
+    }catch(_){alert("That doesn't look like backup text from this recorder.");}
+  }
+  else if(a==="restore"){document.getElementById("restoreFile").click();}
+  else if(a==="print"){try{window.print();}catch(_){}}
+  else if(a==="reset"){
+    if(confirm("Delete ALL entered results on this device? This cannot be undone.")){S={m:{},v:{},c:{},sock:6,sock2:6,extra:[],step:"setup"};save();view();}
+  }
+});
+view();
+if("serviceWorker" in navigator && location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{});}
+</script>
+</body>
+</html>
