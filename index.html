@@ -668,10 +668,10 @@ document.addEventListener("click",async e=>{
     setTimeout(()=>b.textContent="Copy report",1800);
   }
   else if(a==="dl"){
-    if(!saveFile("small-small shed-office-small shed-test-record.txt",document.getElementById("rep").value,"text/plain")){document.getElementById("rep").select();b.textContent="Download failed – copy the text";setTimeout(()=>b.textContent="Download as text file",3000);}
+    if(!saveFile("small-shed-bottom-shed-test-record.txt",document.getElementById("rep").value,"text/plain")){document.getElementById("rep").select();b.textContent="Download failed – copy the text";setTimeout(()=>b.textContent="Download as text file",3000);}
   }
   else if(a==="bak"){
-    const fn="small-small shed-office-small shed-test-backup-"+new Date().toISOString().slice(0,10)+".json";
+    const fn="small-shed-bottom-shed-test-backup-"+new Date().toISOString().slice(0,10)+".json";
     if(!saveFile(fn,JSON.stringify(S),"application/json")){b.textContent="Backup failed";setTimeout(()=>b.textContent="Back up data",3000);}
   }
   else if(a==="bakcopy"){
