@@ -456,7 +456,7 @@ return `<div class="card"><h3 style="margin-top:0">${rg.name}</h3>
 <div><label class="mut">Result</label><div style="padding-top:8px">${h("ring:ends:"+rg.p)}</div></div></div>
 <div class="tw"><table><thead><tr><th>Socket</th><th>L–N (Ω)</th><th>L–CPC (Ω)</th></tr></thead><tbody>${rows}</tbody></table></div>
 <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px"><span>L–N: ${h("xc:ln:"+rg.p)}</span><span>L–CPC: ${h("xc:le:"+rg.p)}</span></div>
-<button class="sm" data-act="addsock" data-ring="${rg.p}">+ Add socket row</button>
+<button class="sm" data-act="addsock" data-ring="${rg.p}">+ Add socket row</button> <button class="sm" data-act="delsock" data-ring="${rg.p}" ${nsock(rg)<=1?"disabled":""}>− Remove last socket row</button>
 <p class="mut">The highest L–CPC reading (the ring's R1+R2) also goes in the R1+R2 step for this ring.</p></div>`;}).join("")}`;},
 
 ir(){return `<div class="card"><h2>Insulation resistance</h2>
@@ -656,6 +656,7 @@ document.addEventListener("click",async e=>{
   if(b.dataset.step){S.step=b.dataset.step;save();view();return;}
   const a=b.dataset.act;
   if(a==="addsock"){const rg=RINGS.find(r=>r.p===b.dataset.ring)||RINGS[1];S[rg.sk]=nsock(rg)+1;save();view();}
+  else if(a==="delsock"){const rg=RINGS.find(r=>r.p===b.dataset.ring)||RINGS[1];const n=nsock(rg);if(n<=1)return;const i=n-1;const has=["ln","le"].some(t=>String(get(skey(rg,t,i))).trim());if(has&&!confirm("Socket "+n+" has readings entered. Remove it and its readings?"))return;["ln","le"].forEach(t=>delete S.v[skey(rg,t,i)]);S[rg.sk]=n-1;save();view();}
   else if(a==="addc"){
     const n=prompt("Circuit name (e.g. Small shed sockets):"); if(!n) return;
     const dev=prompt("Protective device, e.g. B16:","B16")||"B16";
