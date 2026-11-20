@@ -94,7 +94,8 @@ const BASE_CIRCUITS = [
   {id:"shlt", name:"Small shed light radial",                                    dev:"B6",  lim:5.82, pred:"—", base:"sh"},
   {id:"gr",  name:"SECONDARY submain: small shed CU → bottom shed CU (20 m SWA), Zs at bottom shed CU", dev:"B32 MCB at small shed CU (no RCD)", lim:1.10, pred:"R1+R2 ≈0.36, Zs ≈0.58 (at Ze 0.22; 0.71 at Ze 0.35)", base:"ze"},
   {id:"ring",name:"Bottom shed socket ring",                      dev:"B32",                     lim:1.10, pred:"Zs ≈0.73 (bottom shed CU + 0.15)",           base:"gr", ring:true},
-  {id:"lt",  name:"Bottom shed lighting",                         dev:"B6",                      lim:5.82, pred:"Zs ≈1.18 (bottom shed CU + 0.60)",           base:"gr"},
+  {id:"lt",  name:"Bottom shed lighting – main room",             dev:"B6",                      lim:5.82, pred:"Zs ≈1.18 (bottom shed CU + 0.60)",           base:"gr"},
+  {id:"lt2", name:"Bottom shed lighting – spare room",            dev:"B6",                      lim:5.82, pred:"—",                     base:"gr"},
   {id:"ac",  name:"A/C radial (H1)",                              dev:"B10",                     lim:3.50, pred:"—",                     base:"gr"}
 ];
 const RINGS = [
@@ -142,7 +143,7 @@ const VIS = [
  "Earth conductor sizes as designed: 14 mm² CU→rear of house, 10 mm² beyond; connections tight and labelled",
  "PME/earthing arrangement as designed for the outbuildings (confirmed with electrician; 'Safety Electrical Connection' labels on the CU)",
  "Consumer units/enclosures: correct IP rating, covers fitted, blanks in all spare ways, no damage",
- "Device ratings match design: house RCBO 32 A 100 mA bidirectional; small shed ring B32, small shed lights B6; small shed CU 32 A Type B MCB (no RCD) feeding the secondary submain; bottom shed ring B32, lights B6, A/C B10",
+ "Device ratings match design: house RCBO 32 A 100 mA bidirectional; small shed ring B32, small shed lights B6; small shed CU 32 A Type B MCB (no RCD) feeding the secondary submain; bottom shed ring B32, main-room lights B6, spare-room lights B6, A/C B10",
  "Small shed CU: primary submain (60 m SWA) terminated and glanded correctly; secondary submain (20 m SWA) leaves from the 32 A MCB with its own gland, armour earth and correct earth continuity back to the house",
  "Cable sizes and routes match design; cables supported; safe zones / RCD protection for concealed cables",
  "Socket outlets, switches, light fittings mounted securely, no damage, correct IP where required",
@@ -167,7 +168,7 @@ const LABELS = [
  "SMALL SHED CU: every way labelled (incomer, small shed ring, small shed lights, 32 A MCB to bottom shed); incomer labelled 'Fed from house CU, way X – isolate there'",
  "SMALL SHED CU: RCD test notice and periodic inspection notice fitted",
  "SMALL SHED CU: 'Safety Electrical Connection – do not remove' labels at the earthing connections, if the electrician specifies them",
- "BOTTOM SHED CU: every way labelled (incomer, ring, lights, A/C); incomer labelled 'Fed from small shed CU 32 A MCB – isolate there'",
+ "BOTTOM SHED CU: every way labelled (incomer, ring, main-room lights, spare-room lights, A/C); incomer labelled 'Fed from small shed CU 32 A MCB – isolate there'",
  "BOTTOM SHED CU: RCD test notice and periodic inspection notice fitted",
  "SPD type and make at each CU noted for the EIC schedule (no label required, but record it)",
  "Circuit chart fixed inside or beside each of the three boards (use the charts below), filled in and legible, with measured Zs values (514.9.1)",
@@ -375,10 +376,10 @@ function chartsHTML(){
   chartTbl("Bottom shed CU",[
     {n:"Incomer from small shed CU",d:"100 A main switch",cb:"10 mm² 3-core SWA",rcd:"–"},
     {n:"Socket ring",d:"B32 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ring",lim:L("ring"),zs:"zs_ring",c:"ring"},
-    {n:"Lighting",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt",lim:L("lt"),zs:"zs_lt",c:"lt"},
+    {n:"Lighting – main room",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt",lim:L("lt"),zs:"zs_lt",c:"lt"},
+    {n:"Lighting – spare room",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt2",lim:L("lt2"),zs:"zs_lt2",c:"lt2"},
     {n:"A/C radial (H1)",d:"B10 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ac",lim:L("ac"),zs:"zs_ac",c:"ac"},
-    {n:"SPD",d:"type / make: ______"},
-    {n:"Spare",d:""}])+
+    {n:"SPD",d:"type / make: ______"}])+
   `<p class="mut">Figures fill in as you enter them on the earlier steps. Zs for the small shed feed way is the Zs at the small shed CU incomer. Copy onto the chart supplied with each unit, or print this page and fix it inside the door.</p>`;
 }
 
@@ -405,7 +406,7 @@ ${box("stop","Be realistic about your role","You can record these results, but t
 <ul>
 <li><b>Primary submain:</b> house CU (Powerwall-backed) → <b>house RCBO 32 A, 100 mA bidirectional</b> → 20 m T&amp;E (14 mm² earth) then 60 m SWA → <b>small shed CU</b>, which carries its own <b>ring circuit</b>, <b>light radial</b> and a <b>32 A MCB</b> (no RCD, so the bottom shed RCBOs are the only 30 mA devices in that leg and can be tested on their own).</li><li><b>Secondary submain:</b> small shed CU 32 A MCB → 20 m SWA → <b>bottom shed CU</b>.</li>
 <li>Earth: 14 mm² from house CU to rear of house, then 10 mm² (plus the SWA armour/3rd core as designed).</li>
-<li>Bottom shed CU: ring B32, lighting B6, A/C radial <b>B10</b>. Small shed CU ring and light radial device ratings: confirm on the devices and change the "Max Zs" box in the live step if different (B32 1.10 Ω, B16 2.19, B10 3.50, B6 5.82).</li>
+<li>Bottom shed CU: ring B32, <b>two lighting circuits</b> (main room and spare room, both B6), A/C radial <b>B10</b>. Small shed CU ring and light radial device ratings: confirm on the devices and change the "Max Zs" box in the live step if different (B32 1.10 Ω, B16 2.19, B10 3.50, B6 5.82).</li>
 <li>Limits shown are 80 % of the BS 7671 Type B maximum Zs (Zs measured at normal conductor temperature must not exceed these).</li></ul>
 </div>`;},
 
@@ -461,7 +462,7 @@ return `<div class="card"><h3 style="margin-top:0">${rg.name}</h3>
 ir(){return `<div class="card"><h2>Insulation resistance</h2>
 <p class="sub">Dead test at 500 V DC. Required minimum is 1 MΩ; anything under 2 MΩ should be investigated.</p>
 ${mft("ir")}
-${box("","Two submains: test each separately",`<ol><li><b>Primary:</b> isolate at the house. At the small shed CU disconnect the incoming SWA from the main switch (or isolate the whole small shed CU) so the small shed ring, lights and the secondary submain are out of circuit. Test the 60 m SWA core-to-core and core-to-armour.</li><li><b>Secondary:</b> at the small shed CU disconnect the 32 A MCB output and at the bottom shed CU disconnect the incoming SWA. Test the 20 m SWA the same way.</li><li>Then test each final circuit (small shed ring, small shed lights, bottom shed ring, lights, A/C) with its own breaker on and everything electronic disconnected. Reconnect and re-test polarity as you go.</li></ol>`)}
+${box("","Two submains: test each separately",`<ol><li><b>Primary:</b> isolate at the house. At the small shed CU disconnect the incoming SWA from the main switch (or isolate the whole small shed CU) so the small shed ring, lights and the secondary submain are out of circuit. Test the 60 m SWA core-to-core and core-to-armour.</li><li><b>Secondary:</b> at the small shed CU disconnect the 32 A MCB output and at the bottom shed CU disconnect the incoming SWA. Test the 20 m SWA the same way.</li><li>Then test each final circuit (small shed ring, small shed lights, bottom shed ring, bottom shed main-room lights, spare-room lights, A/C) with its own breaker on and everything electronic disconnected. Reconnect and re-test polarity as you go.</li></ol>`)}
 ${box("stop","Before you press test","Remove or unplug anything electronic: A/C unit, LED drivers, dimmers, smart switches, surge protectors, USB socket faces. 500 V can damage them and gives false low readings. Disconnect neutral/earth links at the CU as the instructions for your board say, or test at the circuit end with the ways switched off.")}
 ${box("","How to do it",`<ol>
 <li>Safely isolate. Switch all circuit breakers ON in the board (so conductors are included), main isolation OFF and locked.</li>
