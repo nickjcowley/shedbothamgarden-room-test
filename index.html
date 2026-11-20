@@ -116,11 +116,20 @@ const BOARDS = [
   {id:"sh", name:"Small shed CU"},
   {id:"gr", name:"Bottom shed CU"}
 ];
-const RCDS = [
-  {id:"sm", name:"House submain RCBO (32 A)", inn:100},
-  {id:"sh", name:"Small shed CU RCD/RCBOs (ring, lights)", inn:30},
-  {id:"gr", name:"Bottom shed CU RCD/RCBOs", inn:30}
+const RCDS0 = [
+  {id:"sm",     name:"House submain RCBO (32 A) – test at small shed CU incoming terminals, small shed main switch OFF", inn:100},
+  {id:"shring", name:"Small shed ring RCBO", inn:30},
+  {id:"shlt",   name:"Small shed light RCBO", inn:30},
+  {id:"ring",   name:"Bottom shed ring RCBO", inn:30},
+  {id:"lt",     name:"Bottom shed main-room lights RCBO (incl. fascia)", inn:30},
+  {id:"lt2",    name:"Bottom shed spare-room lights RCBO", inn:30},
+  {id:"ac",     name:"Bottom shed A/C RCBO (B10)", inn:30}
 ];
+const RCDS_OLD = [
+  {id:"sh", name:"Small shed CU RCBOs (earlier single entry)", inn:30},
+  {id:"gr", name:"Bottom shed CU RCBOs (earlier single entry)", inn:30}
+];
+const rcds=()=>RCDS0.concat(RCDS_OLD.filter(d=>String(S.v["rcd_t_"+d.id]??"").trim()||String(S.v["rcd_b_"+d.id]??"").trim()));
 const inn=d=>{const o=parseFloat(S.v["inn_"+d.id]);return o>0?o:d.inn;};
 const STEPS = [
  {id:"setup", t:"Setup & instruments"},
@@ -281,7 +290,7 @@ function checks(){
     }
     add("zs:"+c.id,"live","Zs – "+c.name,res);
   });
-  RCDS.forEach(d=>{
+  rcds().forEach(d=>{
     const t=num("rcd_t_"+d.id);
     let res=NA;
     if(!isNaN(t)) res=t>300?R("bad","over 300 ms"):R("ok","OK ("+Math.round(t)+" ms)");
@@ -524,12 +533,12 @@ rcd(){return `<div class="card"><h2>RCD tests</h2>
 <p class="sub">Current BS 7671 (A2 onwards, including A4:2026) needs one test: an a.c. residual current of 1×IΔn must trip the device in 300 ms or less. The old 5× / 40 ms test is no longer required, so it's optional here.</p>
 ${mft("rcd")}
 ${box("","How",`<ol>
-<li>Power on from the grid. Plug the tester into a socket on the circuit, or clip onto the circuit at the board.</li>
+<li>Power on from the grid. Test <b>every RCBO on its own</b>, always on its <b>load side</b> with that RCBO ON. Test current goes line → earth (red on line, blue on earth), not line → neutral.</li><li>Sockets: plug the tester into a socket on that ring. Lights and A/C: clip red onto that RCBO's outgoing line terminal and blue onto the circuit's earth at the board. House RCBO: at the small shed CU incoming terminals with the small shed main switch OFF.</li>
 <li>Select RCD test, set the tester IΔn to the device's rating (100 mA for the house RCBO, 30 mA for 30 mA devices), current ×1, a.c. type, 0° phase (one polarity is enough).</li>
 <li>Press test. The device trips and the tester shows the time in ms. Reset the device.</li>
 <li>Press the device's own TEST button to prove the mechanism, then reset.</li></ol>`)}
 <div class="tw"><table><thead><tr><th>Device</th><th>IΔn (mA)</th><th>Trip time ×1 (ms)</th><th>Result</th><th>Optional ×5 (ms)</th></tr></thead><tbody>
-${RCDS.map(d=>`<tr><td>${d.name}</td><td class="num"><input type="number" step="any" data-k="inn_${d.id}" placeholder="${d.inn}" value="${esc(get("inn_"+d.id))}"></td><td class="num">${numIn("rcd_t_"+d.id,"≤300")}</td><td>${h("rcd:"+d.id)}</td><td class="num">${numIn("rcd_b_"+d.id,"")} ${inn(d)===30?h("rcd5:"+d.id):""}</td></tr>`).join("")}
+${rcds().map(d=>`<tr><td>${d.name}</td><td class="num"><input type="number" step="any" data-k="inn_${d.id}" placeholder="${d.inn}" value="${esc(get("inn_"+d.id))}"></td><td class="num">${numIn("rcd_t_"+d.id,"≤300")}</td><td>${h("rcd:"+d.id)}</td><td class="num">${numIn("rcd_b_"+d.id,"")} ${inn(d)===30?h("rcd5:"+d.id):""}</td></tr>`).join("")}
 </tbody></table></div>
 <p class="mut">If the house 100 mA bidirectional RCBO is of a type that may not trip correctly with a Powerwall present, take it up with the electrician; record the time as measured.</p></div>`;},
 
@@ -614,7 +623,7 @@ function report(res){
   circuits().forEach(c=>L.push(" Zs "+c.name+": "+val("zs_"+c.id)+" ohm (max "+LIM(c).toFixed(2)+")  ["+res["zs:"+c.id].res.t+"]"));
   L.push(" Voltage drop: no-load "+val("vd0")+" V, loaded "+val("vd1")+" V  ["+res.vd.res.t+"]");
   L.push(" Leakage: "+val("leak")+" mA  ["+res.leak.res.t+"]");L.push("");
-  L.push("== RCD (1xIdn, ms) ==");RCDS.forEach(d=>L.push(" "+d.name+" ("+inn(d)+" mA): "+val("rcd_t_"+d.id)+" ms  ["+res["rcd:"+d.id].res.t+"]"+(get("rcd_b_"+d.id)?"  x5: "+get("rcd_b_"+d.id)+" ms":"")));L.push("");
+  L.push("== RCD (1xIdn, ms) ==");rcds().forEach(d=>L.push(" "+d.name+" ("+inn(d)+" mA): "+val("rcd_t_"+d.id)+" ms  ["+res["rcd:"+d.id].res.t+"]"+(get("rcd_b_"+d.id)?"  x5: "+get("rcd_b_"+d.id)+" ms":"")));L.push("");
   ["visual","iso","func","labels"].forEach(s=>{const k=byS(s);L.push("== "+({visual:"Visual inspection",iso:"Isolation",func:"Functional",labels:"Labels & notices"})[s]+" == "+k.filter(x=>res[x].res.cls==="ok").length+"/"+k.length+" ticked");});
   L.push("");L.push("Comments:");
   let nc=0;
