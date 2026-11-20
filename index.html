@@ -94,7 +94,7 @@ const BASE_CIRCUITS = [
   {id:"shlt", name:"Small shed light radial",                                    dev:"B6",  lim:5.82, pred:"—", base:"sh"},
   {id:"gr",  name:"SECONDARY submain: small shed CU → bottom shed CU (20 m SWA), Zs at bottom shed CU", dev:"B32 MCB at small shed CU (no RCD)", lim:1.10, pred:"R1+R2 ≈0.36, Zs ≈0.58 (at Ze 0.22; 0.71 at Ze 0.35)", base:"ze"},
   {id:"ring",name:"Bottom shed socket ring",                      dev:"B32",                     lim:1.10, pred:"Zs ≈0.73 (bottom shed CU + 0.15)",           base:"gr", ring:true},
-  {id:"lt",  name:"Bottom shed lighting – main room",             dev:"B6",                      lim:5.82, pred:"Zs ≈1.18 (bottom shed CU + 0.60)",           base:"gr"},
+  {id:"lt",  name:"Bottom shed lighting – main room (incl. external fascia lights)", dev:"B6",                      lim:5.82, pred:"Zs ≈1.18 (bottom shed CU + 0.60)",           base:"gr"},
   {id:"lt2", name:"Bottom shed lighting – spare room",            dev:"B6",                      lim:5.82, pred:"—",                     base:"gr"},
   {id:"ac",  name:"A/C radial (H1)",                              dev:"B10",                     lim:3.50, pred:"—",                     base:"gr"}
 ];
@@ -376,7 +376,7 @@ function chartsHTML(){
   chartTbl("Bottom shed CU",[
     {n:"Incomer from small shed CU",d:"100 A main switch",cb:"10 mm² 3-core SWA",rcd:"–"},
     {n:"Socket ring",d:"B32 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ring",lim:L("ring"),zs:"zs_ring",c:"ring"},
-    {n:"Lighting – main room",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt",lim:L("lt"),zs:"zs_lt",c:"lt"},
+    {n:"Lighting – main room + external fascia",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt",lim:L("lt"),zs:"zs_lt",c:"lt"},
     {n:"Lighting – spare room",d:"B6 RCBO",cb:"1.5 mm² T&E",rcd:"30 mA",r12:"r12_lt2",lim:L("lt2"),zs:"zs_lt2",c:"lt2"},
     {n:"A/C radial (H1)",d:"B10 RCBO",cb:"2.5 mm² T&E",rcd:"30 mA",r12:"r12_ac",lim:L("ac"),zs:"zs_ac",c:"ac"},
     {n:"SPD",d:"type / make: ______"}])+
